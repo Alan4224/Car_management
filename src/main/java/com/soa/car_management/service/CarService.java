@@ -9,4 +9,5 @@ import java.util.List;
 public interface CarService {
     List<Car> getCar();
     List<Car> createListCar(List<Car> cars);
+    Car crawData(String url);
 }

@@ -155,7 +155,7 @@ public class Car {
     private Boolean laneChangeAssist;
     private Boolean trafficWarningWhenOpeningTheDoor;
     private Boolean trafficSignRecognition;
-    private Boolean _360degreeCamera;
+    private Boolean three60degreeCamera;
     private Boolean tractionControl;
     private Boolean hillStartAssist;
     private Boolean hillDescentAssist;
