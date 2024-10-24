@@ -1,4 +1,4 @@
-package com.soa.car_management.dto;
+package com.soa.car_management.dto.request;
 
 import jakarta.persistence.Column;
 import lombok.Getter;
@@ -7,6 +7,10 @@ import lombok.Setter;
 @Setter
 @Getter
 public class CarRequestDTO {
+
+    private String name;
+
+    private String price;
 
     // Động cơ/hộp số
     private String engineType;

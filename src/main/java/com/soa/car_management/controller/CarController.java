@@ -1,6 +1,9 @@
 package com.soa.car_management.controller;
 
+import com.soa.car_management.dto.request.CarRequestDTO;
+import com.soa.car_management.dto.respond.CarRespondDTO;
 import com.soa.car_management.entity.Car;
+import com.soa.car_management.mapper.CarMapper;
 import com.soa.car_management.service.CarService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -20,37 +23,25 @@ public class CarController {
     @Autowired
     CarService carService;
 
+    @Autowired
+    CarMapper carMapper;
+
     @GetMapping
-    List<Car> getCar(){
+    List<CarRespondDTO> getCar(){
         return carService.getCar();
     }
     @PostMapping
-    List<Car> createCar(){
-        List<Car> cars = new ArrayList<>();
+    List<CarRespondDTO> createCar(@RequestBody List<CarRequestDTO> request){
+        List<Car> cars = request.stream().map(carMapper::toCar).toList();
         return carService.createListCar(cars);
     }
-
     @GetMapping("/test")
     void test(){
-        Class<Car> carClass = Car.class;
-
-        System.out.println("Fields of Car class:");
-        for (Field field : carClass.getDeclaredFields()) {
-            System.out.println(field.getName()+" "+field.getType());
-        }
-        try {
-            Document doc_base = Jsoup.connect("https://vnexpress.net/oto-xe-may/v-car/so-sanh-xe/versions/650,41,66,92").get();
-            List<String> labels = doc_base.select("div.title").stream().map(Element::text).collect(Collectors.toList());
-            for (String label : labels) {
-                System.out.println(label);
-            }
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
+        carService.test();
     }
 
     @PostMapping("/testjsoup")
-    Car testJsoup(@RequestBody Map<String, String> request) {
+    CarRespondDTO testJsoup(@RequestBody Map<String, String> request) {
         String url = request.get("url");
         if (url != null && (url.startsWith("http://") || url.startsWith("https://"))) {
             return carService.crawData(url);
