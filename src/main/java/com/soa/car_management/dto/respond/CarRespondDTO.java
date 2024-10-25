@@ -14,17 +14,16 @@ public class CarRespondDTO {
     private String price;
     // Động cơ/hộp số
     private String engineType;
-    private Integer enginePower;
-    private Integer engineTorque;
+    private String enginePower;
+    private String engineTorque;
     private String gearBox;
     private String driveSystem;
     private String fuelType;
-    private Double fuelConsumption;
-    @Column(name = "`range`")
-    private Integer range;
+    private String fuelConsumption;
+    private String operatingRange;
     private String fastChargingTime;
     private String batteryType;
-    private Double batteryCapacity;
+    private String batteryCapacity;
     private String horsepower;
     private Double capacity;
     private String torque;
@@ -35,7 +34,7 @@ public class CarRespondDTO {
     private Double wheelbase;
     private Integer groundClearance;
     private Double turningRadius;
-    private Integer fuelTankCapacity;
+    private Double fuelTankCapacity;
     private String tireAndWheel;
     private Integer luggageCompartmentVolume;
     private Double selfWeight;
