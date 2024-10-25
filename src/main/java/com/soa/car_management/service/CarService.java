@@ -10,8 +10,7 @@ import java.util.List;
 
 @Service
 public interface CarService {
-    List<CarRespondDTO> getCar();
-    List<CarRespondDTO> createListCar(List<Car> cars);
-    CarRespondDTO crawData(String url);
+    List<CarRespondDTO> getAllCar();
+    List<CarRespondDTO> crawData();
     void test();
 }

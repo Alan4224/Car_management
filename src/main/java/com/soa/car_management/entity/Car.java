@@ -17,6 +17,8 @@ public class Car {
     private String name;
 
     private String price;
+
+    private String image;
     // Động cơ/hộp số
     private String engineType;
     private String enginePower;
@@ -30,20 +32,20 @@ public class Car {
     private String batteryType;
     private String batteryCapacity;
     private String horsepower;
-    private Double capacity;
+    private String capacity;
     private String torque;
 
     // Kích thước và trọng lượng
     private String seatNumber;
     private String dimensions;
-    private Double wheelbase;
-    private Integer groundClearance;
-    private Double turningRadius;
-    private Double fuelTankCapacity;
+    private String wheelbase;
+    private String groundClearance;
+    private String turningRadius;
+    private String fuelTankCapacity;
     private String tireAndWheel;
-    private Integer luggageCompartmentVolume;
-    private Double selfWeight;
-    private Double fullLoadWeight;
+    private String luggageCompartmentVolume;
+    private String selfWeight;
+    private String fullLoadWeight;
 
     // Ngoại thất
     private String highBeam;

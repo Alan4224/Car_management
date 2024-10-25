@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-10-25T11:03:50+0700",
+    date = "2024-10-25T17:55:08+0700",
     comments = "version: 1.6.2, compiler: javac, environment: Java 22.0.1 (Oracle Corporation)"
 )
 @Component
@@ -25,6 +25,7 @@ public class CarMapperImpl implements CarMapper {
         carRespondDTO.setId( car.getId() );
         carRespondDTO.setName( car.getName() );
         carRespondDTO.setPrice( car.getPrice() );
+        carRespondDTO.setImage( car.getImage() );
         carRespondDTO.setEngineType( car.getEngineType() );
         carRespondDTO.setEnginePower( car.getEnginePower() );
         carRespondDTO.setEngineTorque( car.getEngineTorque() );
@@ -172,8 +173,10 @@ public class CarMapperImpl implements CarMapper {
 
         Car.CarBuilder car = Car.builder();
 
+        car.id( carRequestDTO.getId() );
         car.name( carRequestDTO.getName() );
         car.price( carRequestDTO.getPrice() );
+        car.image( carRequestDTO.getImage() );
         car.engineType( carRequestDTO.getEngineType() );
         car.enginePower( carRequestDTO.getEnginePower() );
         car.engineTorque( carRequestDTO.getEngineTorque() );

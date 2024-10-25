@@ -12,10 +12,12 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Service
 public class CarServiceImpl implements CarService {
@@ -26,13 +28,9 @@ public class CarServiceImpl implements CarService {
     CarMapper carMapper;
 
     @Override
-    public List<CarRespondDTO> getCar() {
+    public List<CarRespondDTO> getAllCar() {
+        System.out.println(carRepository.count());
         return carRepository.findAll().stream().map(carMapper::toCarRespondDTO).toList();
-    }
-
-    @Override
-    public List<CarRespondDTO> createListCar(List<Car> cars) {
-        return carRepository.saveAll(cars).stream().map(carMapper::toCarRespondDTO).toList();
     }
 
     @Override
@@ -45,7 +43,7 @@ public class CarServiceImpl implements CarService {
         }
         try {
             Document doc_base = Jsoup.connect("https://vnexpress.net/oto-xe-may/v-car/so-sanh-xe/versions/650,41,66,92").get();
-            List<String> labels = doc_base.select("div.title").stream().map(Element::text).collect(Collectors.toList());
+            List<String> labels = doc_base.select("div.title").stream().map(Element::text).toList();
             for (String label : labels) {
                 System.out.println(label);
             }
@@ -56,7 +54,37 @@ public class CarServiceImpl implements CarService {
 
     //CRAW DATA
     @Override
-    public CarRespondDTO crawData(String url) {
+    public List<CarRespondDTO> crawData() {
+        List<Car> cars = new ArrayList<>();
+        try {
+            Document trangTong = Jsoup.connect("https://vnexpress.net/oto-xe-may/v-car").get();
+            Elements hangXe = trangTong.select("div.grid.grid__8.list-hangxe.list-company-home a");
+            List<String> linkHangXes = hangXe.stream().map(element -> element.attr("href")).toList();
+
+            for (String linkHangXe : linkHangXes) {
+                Document trangHang = Jsoup.connect("https://vnexpress.net"+linkHangXe).get();
+                Elements divsTrangTongXe = trangHang.select("div.list-xe.list-xe__company.grid.grid__4.mb60 div.article-thumb a");
+                List<String> linkTrangTongXes = divsTrangTongXe.stream().map(element -> element.attr("href")).toList();
+                for(String linkTrangTongXe : linkTrangTongXes){
+                    if (!linkTrangTongXe.startsWith("https://vnexpress.net")) {
+                        linkTrangTongXe =  "https://vnexpress.net"+ linkTrangTongXe; // Prepend the base URL if it's a relative link
+                    }
+                    Document trangTongXe = Jsoup.connect(linkTrangTongXe).get();
+                    String linkTrangKiThuat = trangTongXe.select("div.load-more.center.mt20 a").attr("href");
+                    linkTrangKiThuat = "https://vnexpress.net"+linkTrangKiThuat;
+                    Car car=craw(linkTrangKiThuat);
+                    String linkImg=trangTongXe.select("a.thumb_img.thumb_5x3.detail-icon-gallery picture img").attr("src");
+                    car.setImage(linkImg);
+                    cars.add(car);
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return carRepository.saveAll(cars).stream().map(car -> carMapper.toCarRespondDTO(car)).toList();
+    }
+
+    private Car craw (String url){
         Car car = new Car();
         try {
             Class<Car> carClass = Car.class;
@@ -75,14 +103,14 @@ public class CarServiceImpl implements CarService {
                 car.setPrice(price);
                 for (int i = 0; i < labels.size(); i++) {
                     if (labels.get(i).equals(label)) {
-                        String attribute = attributes[i + 3].getName();
-                        if (attributes[i + 3].getType().equals(String.class)) {
+                        String attribute = attributes[i + 4].getName();
+                        if (attributes[i + 4].getType().equals(String.class)) {
                             setAttributeString(attribute, value, car);
-                        } else if (attributes[i + 3].getType().equals(Boolean.class)) {
+                        } else if (attributes[i + 4].getType().equals(Boolean.class)) {
                             setAttributeBoolean(attribute, element, car);
-                        } else if (attributes[i + 3].getType().equals(Double.class)) {
+                        } else if (attributes[i + 4].getType().equals(Double.class)) {
                             setAttributeDouble(attribute, value, car);
-                        } else if (attributes[i + 3].getType().equals(Integer.class)) {
+                        } else if (attributes[i + 4].getType().equals(Integer.class)) {
                             setAttributeInteger(attribute, value, car);
                         }
                     }
@@ -91,7 +119,7 @@ public class CarServiceImpl implements CarService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return carMapper.toCarRespondDTO(carRepository.save(car));
+        return car;
     }
 
     private Boolean hasCheckIcon(Element element) {
@@ -100,7 +128,7 @@ public class CarServiceImpl implements CarService {
 
     private void setAttributeString(String attribute, String value, Car car) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         String methodName = "set" + attribute.substring(0, 1).toUpperCase() + attribute.substring(1);
-        car.getClass().getMethod(methodName, String.class).invoke(car, value);
+        car.getClass().getMethod(methodName, String.class).invoke(car, value.isEmpty() ? null : value);
     }
 
     private void setAttributeBoolean(String attribute, Element element, Car car) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
