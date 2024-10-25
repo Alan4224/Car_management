@@ -25,11 +25,6 @@ public class CarController {
         return carService.getAllCar();
     }
 
-    @GetMapping("test")
-    void test(){
-        carService.test();
-    }
-
     @GetMapping("/crawdata")
     List<CarRespondDTO> crawData(){
         return carService.crawData();

@@ -12,5 +12,4 @@ import java.util.List;
 public interface CarService {
     List<CarRespondDTO> getAllCar();
     List<CarRespondDTO> crawData();
-    void test();
 }

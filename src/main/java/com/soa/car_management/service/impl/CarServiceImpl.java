@@ -33,25 +33,6 @@ public class CarServiceImpl implements CarService {
         return carRepository.findAll().stream().map(carMapper::toCarRespondDTO).toList();
     }
 
-    @Override
-    public void test() {
-        Class<Car> carClass = Car.class;
-
-        System.out.println("Fields of Car class:");
-        for (Field field : carClass.getDeclaredFields()) {
-            System.out.println(field.getName()+" "+field.getType());
-        }
-        try {
-            Document doc_base = Jsoup.connect("https://vnexpress.net/oto-xe-may/v-car/so-sanh-xe/versions/650,41,66,92").get();
-            List<String> labels = doc_base.select("div.title").stream().map(Element::text).toList();
-            for (String label : labels) {
-                System.out.println(label);
-            }
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     //CRAW DATA
     @Override
     public List<CarRespondDTO> crawData() {
@@ -71,6 +52,7 @@ public class CarServiceImpl implements CarService {
                     }
                     Document trangTongXe = Jsoup.connect(linkTrangTongXe).get();
                     String linkTrangKiThuat = trangTongXe.select("div.load-more.center.mt20 a").attr("href");
+                    if(!linkTrangKiThuat.startsWith("/")) continue;
                     linkTrangKiThuat = "https://vnexpress.net"+linkTrangKiThuat;
                     Car car=craw(linkTrangKiThuat);
                     String linkImg=trangTongXe.select("a.thumb_img.thumb_5x3.detail-icon-gallery picture img").attr("src");
@@ -108,10 +90,6 @@ public class CarServiceImpl implements CarService {
                             setAttributeString(attribute, value, car);
                         } else if (attributes[i + 4].getType().equals(Boolean.class)) {
                             setAttributeBoolean(attribute, element, car);
-                        } else if (attributes[i + 4].getType().equals(Double.class)) {
-                            setAttributeDouble(attribute, value, car);
-                        } else if (attributes[i + 4].getType().equals(Integer.class)) {
-                            setAttributeInteger(attribute, value, car);
                         }
                     }
                 }
@@ -137,15 +115,5 @@ public class CarServiceImpl implements CarService {
         car.getClass().getMethod(methodName, Boolean.class).invoke(car, value);
     }
 
-    private void setAttributeDouble(String attribute, String value, Car car) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        String methodName = "set" + attribute.substring(0, 1).toUpperCase() + attribute.substring(1);
-        car.getClass().getMethod(methodName, Double.class).invoke(car, value.isEmpty() ? null : Double.parseDouble(value.replace(",", ".")));
-    }
-
-    private void setAttributeInteger(String attribute, String value, Car car) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        String methodName = "set" + attribute.substring(0, 1).toUpperCase() + attribute.substring(1);
-        car.getClass().getMethod(methodName, Integer.class).invoke(car, value.isEmpty() ? null : Integer.parseInt(value));
-    }
-
-    //END CRAW DATA
+    //END CRAW DATA*/
 }
