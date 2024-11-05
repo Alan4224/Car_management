@@ -12,4 +12,7 @@ public interface CarService {
     List<Car> getCarByCompany(String carCompany);
     List<String> getAllCompany();
     Car getCarByName(String carName);
+    Car createCar(Car car);
+//    Car updateCar(String id,Car car);
+    String deleteCar(String id);
 }

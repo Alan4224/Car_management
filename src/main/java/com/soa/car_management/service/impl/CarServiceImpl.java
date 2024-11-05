@@ -43,6 +43,24 @@ public class CarServiceImpl implements CarService {
         return carRepository.findByName(carName);
     }
 
+    @Override
+    public Car createCar(Car car) {
+        return carRepository.save(car);
+    }
+
+//    @Override
+//    public Car updateCar(String id, Car car) {
+//        Car carOld= carRepository.findById(id).orElseThrow();
+//
+//        return ;
+//    }
+
+    @Override
+    public String deleteCar(String id) {
+        carRepository.deleteById(id);
+        return "DELETE SUCCESS";
+    }
+
     //CRAW DATA
     @Override
     public List<Car> crawData() {
