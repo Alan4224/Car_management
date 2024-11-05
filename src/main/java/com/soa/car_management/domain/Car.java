@@ -1,13 +1,17 @@
-package com.soa.car_management.dto.request;
+package com.soa.car_management.domain;
 
-import jakarta.persistence.Column;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
 
+@Entity
 @Setter
 @Getter
-public class CarRequestDTO {
-
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class Car {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     private String name;
@@ -15,6 +19,8 @@ public class CarRequestDTO {
     private String price;
 
     private String image;
+
+    private String company;
     // Động cơ/hộp số
     private String engineType;
     private String enginePower;
@@ -163,4 +169,5 @@ public class CarRequestDTO {
     private String frontBrakes;
     private String rearSuspension;
     private String frontSuspension;
+
 }

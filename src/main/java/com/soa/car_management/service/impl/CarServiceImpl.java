@@ -1,8 +1,6 @@
 package com.soa.car_management.service.impl;
 
-import com.soa.car_management.dto.respond.CarRespondDTO;
-import com.soa.car_management.entity.Car;
-import com.soa.car_management.mapper.CarMapper;
+import com.soa.car_management.domain.Car;
 import com.soa.car_management.repository.CarRepository;
 import com.soa.car_management.service.CarService;
 import org.jsoup.Jsoup;
@@ -24,18 +22,30 @@ public class CarServiceImpl implements CarService {
     @Autowired
     CarRepository carRepository;
 
-    @Autowired
-    CarMapper carMapper;
+    @Override
+    public List<Car> getAllCar() {
+        System.out.println(carRepository.count());
+        return carRepository.findAll();
+    }
 
     @Override
-    public List<CarRespondDTO> getAllCar() {
-        System.out.println(carRepository.count());
-        return carRepository.findAll().stream().map(carMapper::toCarRespondDTO).toList();
+    public List<Car> getCarByCompany(String carCompany) {
+        return carRepository.findAllByCompany(carCompany);
+    }
+
+    @Override
+    public List<String> getAllCompany() {
+        return carRepository.findAllCompanies();
+    }
+
+    @Override
+    public Car getCarByName(String carName) {
+        return carRepository.findByName(carName);
     }
 
     //CRAW DATA
     @Override
-    public List<CarRespondDTO> crawData() {
+    public List<Car> crawData() {
         List<Car> cars = new ArrayList<>();
         try {
             Document trangTong = Jsoup.connect("https://vnexpress.net/oto-xe-may/v-car").get();
@@ -57,13 +67,15 @@ public class CarServiceImpl implements CarService {
                     Car car=craw(linkTrangKiThuat);
                     String linkImg=trangTongXe.select("a.thumb_img.thumb_5x3.detail-icon-gallery picture img").attr("src");
                     car.setImage(linkImg);
+                    String carCompany = trangTongXe.select("section.bg-agray div.breadcrumb ul.container li.active a").text();
+                    car.setCompany(carCompany);
                     cars.add(car);
                 }
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return carRepository.saveAll(cars).stream().map(car -> carMapper.toCarRespondDTO(car)).toList();
+        return carRepository.saveAll(cars);
     }
 
     private Car craw (String url){
