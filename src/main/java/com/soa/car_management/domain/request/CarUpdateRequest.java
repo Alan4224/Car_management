@@ -1,15 +1,11 @@
-package com.soa.car_management.domain;
+package com.soa.car_management.domain.request;
 
-import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+
 @Setter
 @Getter
-@Entity
-public class Car {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
-
+public class CarUpdateRequest {
     private String name;
 
     private String price;
@@ -165,6 +161,4 @@ public class Car {
     private String frontBrakes;
     private String rearSuspension;
     private String frontSuspension;
-
-
 }

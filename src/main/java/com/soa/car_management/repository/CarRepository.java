@@ -15,4 +15,5 @@ public interface CarRepository extends JpaRepository<Car,String> {
     List<String> findAllCompanies();
 
     Car findByName(String name);
+
 }

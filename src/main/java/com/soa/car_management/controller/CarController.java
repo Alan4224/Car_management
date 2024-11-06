@@ -1,6 +1,7 @@
 package com.soa.car_management.controller;
 
 import com.soa.car_management.domain.Car;
+import com.soa.car_management.domain.request.CarUpdateRequest;
 import com.soa.car_management.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,7 +32,12 @@ public class CarController {
         return ResponseEntity.status(HttpStatus.CREATED).body(carService.createCar(car));
     }
 
-    @DeleteMapping
+    @PutMapping("/update/{id}")
+    ResponseEntity<Car> updateCar(@PathVariable String id,@RequestBody CarUpdateRequest carUpdateRequest){
+        return ResponseEntity.ok(carService.updateCar(id,carUpdateRequest));
+    }
+
+    @DeleteMapping("/delete/{id}")
     ResponseEntity<String> deleteCar(@PathVariable String id){
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(carService.deleteCar(id));
     }

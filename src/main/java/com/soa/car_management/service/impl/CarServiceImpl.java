@@ -1,8 +1,10 @@
 package com.soa.car_management.service.impl;
 
 import com.soa.car_management.domain.Car;
+import com.soa.car_management.domain.request.CarUpdateRequest;
 import com.soa.car_management.repository.CarRepository;
 import com.soa.car_management.service.CarService;
+import com.soa.car_management.util.mapper.CarMapper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -21,6 +23,9 @@ import java.util.List;
 public class CarServiceImpl implements CarService {
     @Autowired
     CarRepository carRepository;
+
+    @Autowired
+    CarMapper carMapper;
 
     @Override
     public List<Car> getAllCar() {
@@ -48,12 +53,12 @@ public class CarServiceImpl implements CarService {
         return carRepository.save(car);
     }
 
-//    @Override
-//    public Car updateCar(String id, Car car) {
-//        Car carOld= carRepository.findById(id).orElseThrow();
-//
-//        return ;
-//    }
+    @Override
+    public Car updateCar(String id, CarUpdateRequest carUpdateRequest) {
+        Car car = carRepository.findById(id).orElseThrow();
+        carMapper.updateCarFromDto(carUpdateRequest,car);
+        return carRepository.save(car);
+    }
 
     @Override
     public String deleteCar(String id) {
