@@ -120,10 +120,10 @@ public class CarServiceImpl implements CarService {
                 car.setPrice(price);
                 for (int i = 0; i < labels.size(); i++) {
                     if (labels.get(i).equals(label)) {
-                        String attribute = attributes[i + 4].getName();
-                        if (attributes[i + 4].getType().equals(String.class)) {
+                        String attribute = attributes[i + 5].getName();
+                        if (attributes[i + 5].getType().equals(String.class)) {
                             setAttributeString(attribute, value, car);
-                        } else if (attributes[i + 4].getType().equals(Boolean.class)) {
+                        } else if (attributes[i + 5].getType().equals(Boolean.class)) {
                             setAttributeBoolean(attribute, element, car);
                         }
                     }
