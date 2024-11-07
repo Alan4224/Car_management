@@ -8,12 +8,15 @@ import java.util.List;
 
 @Service
 public interface CarService {
-    List<Car> getAllCar();
+    List<String> getAllCompany();
+    List<String> getAllCarName(String company);
+    List<String> getAllVersion(String company,String carName);
     List<Car> crawData();
     List<Car> getCarByCompany(String carCompany);
-    List<String> getAllCompany();
-    Car getCarByName(String carName);
+    List<Car> getCarByCompanyAndName(String company, String carName);
+    List<Car> getCarByCompanyAndNameAndVersion(String company, String carName,String carVersion);
+    List<Car> getAllCar();
     Car createCar(Car car);
     Car updateCar(String id, CarUpdateRequest carUpdateRequest);
-    String deleteCar(String id);
+    void deleteCar(String id);
 }

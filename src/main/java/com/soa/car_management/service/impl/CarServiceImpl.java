@@ -34,8 +34,13 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public List<Car> getCarByCompany(String carCompany) {
-        return carRepository.findAllByCompany(carCompany);
+    public List<String> getAllCarName(String company) {
+        return carRepository.findAllName(company);
+    }
+
+    @Override
+    public List<String> getAllVersion(String company,String carName) {
+        return carRepository.findAllVerSion(company, carName);
     }
 
     @Override
@@ -44,8 +49,18 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public Car getCarByName(String carName) {
-        return carRepository.findByName(carName);
+    public List<Car> getCarByCompany(String carCompany) {
+        return carRepository.findAllByCompany(carCompany);
+    }
+
+    @Override
+    public List<Car> getCarByCompanyAndName(String company, String name) {
+        return carRepository.findAllByCompanyAndName(company,name);
+    }
+
+    @Override
+    public List<Car> getCarByCompanyAndNameAndVersion(String company, String carName, String carVersion) {
+        return carRepository.findAllByCompanyAndNameAndVersion(company,carName,carVersion);
     }
 
     @Override
@@ -61,9 +76,8 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public String deleteCar(String id) {
+    public void deleteCar(String id) {
         carRepository.deleteById(id);
-        return "DELETE SUCCESS";
     }
 
     //CRAW DATA
@@ -84,15 +98,23 @@ public class CarServiceImpl implements CarService {
                         linkTrangTongXe =  "https://vnexpress.net"+ linkTrangTongXe; // Prepend the base URL if it's a relative link
                     }
                     Document trangTongXe = Jsoup.connect(linkTrangTongXe).get();
-                    String linkTrangKiThuat = trangTongXe.select("div.load-more.center.mt20 a").attr("href");
-                    if(!linkTrangKiThuat.startsWith("/")) continue;
-                    linkTrangKiThuat = "https://vnexpress.net"+linkTrangKiThuat;
-                    Car car=craw(linkTrangKiThuat);
-                    String linkImg=trangTongXe.select("a.thumb_img.thumb_5x3.detail-icon-gallery picture img").attr("src");
-                    car.setImage(linkImg);
-                    String carCompany = trangTongXe.select("section.bg-agray div.breadcrumb ul.container li.active a").text();
-                    car.setCompany(carCompany);
-                    cars.add(car);
+                    String linkTrangKiThuatNhieuPhienBan = trangTongXe.select("div.load-more.center.mt20 a").attr("href");
+                    if(!linkTrangKiThuatNhieuPhienBan.startsWith("/")) continue;
+                    linkTrangKiThuatNhieuPhienBan = "https://vnexpress.net"+linkTrangKiThuatNhieuPhienBan;
+                    Document trangKiThuatNhieuPhienBan  = Jsoup.connect(linkTrangKiThuatNhieuPhienBan).get();
+                    Elements tagATrangKiThuats=trangKiThuatNhieuPhienBan.select("div.sub.change-version-info-pc a");
+                    for(Element tagATrangKiThuat:tagATrangKiThuats) {
+                        String linkTrangKiThuat=tagATrangKiThuat.attr("data-link-version");
+                        linkTrangKiThuat="https://vnexpress.net"+linkTrangKiThuat;
+                        Car car = craw(linkTrangKiThuat);
+                        String linkImg = trangTongXe.select("a.thumb_img.thumb_5x3.detail-icon-gallery picture img").attr("src");
+                        car.setImage(linkImg);
+                        String carCompany = trangTongXe.select("section.bg-agray div.breadcrumb ul.container li.active a").text();
+                        car.setCompany(carCompany);
+                        String name= car.getName().replace(car.getCompany(),"").trim();
+                        car.setName(name);
+                        cars.add(car);
+                    }
                 }
             }
         } catch (IOException e) {
@@ -116,14 +138,16 @@ public class CarServiceImpl implements CarService {
                 String value = element.select("div.td2").text();
                 String name = doc.select("h1").select("a[title]").first().attr("title");
                 car.setName(name);
-                String price = doc.select("span.text-version").first().text();
-                car.setPrice(price);
+                String priceAndVersion = doc.select("span.text-version").first().text();
+                String[] parts = priceAndVersion.split(" - ");
+                car.setPrice(parts[1]);
+                car.setVersion(parts[0]);
                 for (int i = 0; i < labels.size(); i++) {
                     if (labels.get(i).equals(label)) {
-                        String attribute = attributes[i + 5].getName();
-                        if (attributes[i + 5].getType().equals(String.class)) {
+                        String attribute = attributes[i + 6].getName();
+                        if (attributes[i + 6].getType().equals(String.class)) {
                             setAttributeString(attribute, value, car);
-                        } else if (attributes[i + 5].getType().equals(Boolean.class)) {
+                        } else if (attributes[i + 6].getType().equals(Boolean.class)) {
                             setAttributeBoolean(attribute, element, car);
                         }
                     }
@@ -149,6 +173,5 @@ public class CarServiceImpl implements CarService {
         Boolean value = hasCheckIcon(element);
         car.getClass().getMethod(methodName, Boolean.class).invoke(car, value);
     }
-
     //END CRAW DATA*/
 }

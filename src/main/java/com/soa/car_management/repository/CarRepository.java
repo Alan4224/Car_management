@@ -9,11 +9,18 @@ import java.util.List;
 
 @Repository
 public interface CarRepository extends JpaRepository<Car,String> {
-    List<Car> findAllByCompany(String company);
-
     @Query("SELECT DISTINCT c.company FROM Car c")
     List<String> findAllCompanies();
 
-    Car findByName(String name);
+    @Query("SELECT DISTINCT c.name FROM Car c   WHERE c.company = ?1")
+    List<String> findAllName(String company);
 
+    @Query("SELECT DISTINCT c.version FROM Car c   WHERE c.company = ?1 AND c.name = ?2")
+    List<String> findAllVerSion(String company,String name);
+
+    List<Car> findAllByCompany(String company);
+
+    List<Car> findAllByCompanyAndName(String company, String name);
+
+    List<Car> findAllByCompanyAndNameAndVersion(String company, String name,String version);
 }
