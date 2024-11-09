@@ -10,15 +10,23 @@ public class Car {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    private String name;
+    // Số lượng kho
+    // Số lượng bán
+    //tg nhận
+    //tg bán
+    // Thêm entity khách hàng Mua(carID){số lượng kho -1}
 
-    private String price;
+    private String name; // Tên
 
-    private String version;
+    private String price; // Giá
 
-    private String image;
+    private String version; // Phiên bản
 
-    private String company;
+    private String image; // Hình ảnh
+
+    private Integer sale; // Doanh số
+
+    private String company; // Hãng xe
     // Động cơ/hộp số
     private String engineType; // Kiểu động cơ
 

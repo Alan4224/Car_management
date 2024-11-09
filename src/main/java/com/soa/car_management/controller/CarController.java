@@ -2,62 +2,92 @@ package com.soa.car_management.controller;
 
 import com.soa.car_management.domain.Car;
 import com.soa.car_management.domain.request.CarUpdateRequest;
+import com.soa.car_management.repository.CarRepository;
 import com.soa.car_management.service.CarService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Random;
 
 
 @RestController
 @RequestMapping("/car")
+@Tag(name = "Car Management", description = "APIs for managing car data")
 public class CarController {
     @Autowired
     CarService carService;
 
+    @Autowired
+    CarRepository carRepository;
+
+    @GetMapping("/themtruong")
+    List<Car> them(){
+        Random random = new Random();
+        int min = 824;
+        int max = 2591;
+        List<Car> cars = carService.getAllCar();
+        for(int i =0;i<cars.size();i++){
+            int randomNumber = random.nextInt(max - min + 1) + min;
+            cars.get(i).setSale(randomNumber);
+        }
+        return carRepository.saveAll(cars);
+    }
+
+    @Operation(summary = "Crawl car data", description = "Crawl car data from external sources and store it in the system")
     @GetMapping("/crawdata")
     List<Car> crawData() {
         return carService.crawData();
     }
 
+    @Operation(summary = "Get all companies", description = "Retrieve a list of all car companies")
     @GetMapping("/companies")
     ResponseEntity<List<String>> getAllCompanies() {
         return ResponseEntity.ok(carService.getAllCompany());
     }
 
+    @Operation(summary = "Get all car names by company", description = "Retrieve a list of all car names for a specific company")
     @GetMapping("/dong-xe/{company}")
-    ResponseEntity<List<String>> getAllCarNames(@PathVariable String company){
+    ResponseEntity<List<String>> getAllCarNames(@Parameter(description = "Name of the company")@PathVariable String company){
         return ResponseEntity.ok(carService.getAllCarName(company));
     }
 
+    @Operation(summary = "Get all car versions by company and car name", description = "Retrieve a list of all car versions for a specific company and car name")
     @GetMapping("/phien-ban/{company}/{carName}")
-    ResponseEntity<List<String>> getAllCarVersions(@PathVariable String company,@PathVariable String carName){
+    ResponseEntity<List<String>> getAllCarVersions(@Parameter(description = "Name of the company") @PathVariable String company,
+                                                   @Parameter(description = "Name of the car")@PathVariable String carName){
         return ResponseEntity.ok(carService.getAllVersion(company,carName));
     }
 
     @PostMapping
-    ResponseEntity<Car> createCar(@RequestBody Car car) {
+    @Operation(summary = "Create a new car", description = "Create a new car entry in the system")
+    public ResponseEntity<Car> createCar(@RequestBody Car car) {
         return ResponseEntity.status(HttpStatus.CREATED).body(carService.createCar(car));
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<Car> updateCar(@PathVariable String id, @RequestBody CarUpdateRequest carUpdateRequest) {
+    @Operation(summary = "Update a car", description = "Update an existing car entry in the system")
+    public ResponseEntity<Car> updateCar( @Parameter(description = "ID of the car to be updated") @PathVariable String id, @RequestBody CarUpdateRequest carUpdateRequest) {
         return ResponseEntity.ok(carService.updateCar(id, carUpdateRequest));
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<Void> deleteCar(@PathVariable String id) {
-        carService.deleteCar(id);
-        return ResponseEntity.noContent().build();
+    @Operation(summary = "Delete a car", description = "Delete an existing car entry in the system")
+    public ResponseEntity<Void> deleteCar(@Parameter(description = "ID of the car to be deleted") @PathVariable String id) {
+        carService.deleteCar(id); return ResponseEntity.noContent().build();
     }
 
     @GetMapping
-    ResponseEntity<List<Car>> getCarInfo(@RequestParam(required = false) String company,
-                                         @RequestParam(required = false) String name,
-                                         @RequestParam(required = false) String version) {
+    @Operation(summary = "Get car information", description = "Retrieve car information based on company, name, and version")
+    public ResponseEntity<List<Car>> getCarInfo( @Parameter(description = "Name of the company") @RequestParam(required = false) String company,
+                                                 @Parameter(description = "Name of the car") @RequestParam(required = false) String name,
+                                                 @Parameter(description = "Version of the car") @RequestParam(required = false) String version) {
         if (company == null && name == null && version == null) {
             return ResponseEntity.ok(carService.getAllCar());
         } else if (company != null && name == null && version == null) {
