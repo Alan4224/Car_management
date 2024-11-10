@@ -1,6 +1,7 @@
 package com.soa.car_management.controller;
 
 import com.soa.car_management.domain.Car;
+import com.soa.car_management.domain.Sale;
 import com.soa.car_management.domain.request.CarUpdateRequest;
 import com.soa.car_management.repository.CarRepository;
 import com.soa.car_management.service.CarService;
@@ -13,8 +14,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 
 @RestController
@@ -30,12 +33,32 @@ public class CarController {
     @GetMapping("/themtruong")
     List<Car> them(){
         Random random = new Random();
-        int min = 824;
-        int max = 2591;
+        int originMinN = 300;
+        int originMaxN = 546;
+        int originMinC = 208;
+        int originMaxC = 334;
+        int originMinS = 238;
+        int originMaxS = 764;
         List<Car> cars = carService.getAllCar();
         for(int i =0;i<cars.size();i++){
-            int randomNumber = random.nextInt(max - min + 1) + min;
-            cars.get(i).setSale(randomNumber);
+            Set<Sale> sales = new HashSet<>();
+            int chia=carRepository.findAllByCompanyAndName(cars.get(i).getCompany(),cars.get(i).getName()).size();
+            int minN = originMinN / chia;
+            int maxN = originMaxN / chia;
+            int minC = originMinC / chia;
+            int maxC = originMaxC / chia;
+            int minS = originMinS / chia;
+            int maxS = originMaxS / chia;
+            for(int j=1;j<13;j++){
+                Sale sale = new Sale();
+                sale.setMonth(j);
+                sale.setNorth(random.nextInt(maxN - minN + 1) + minN);
+                sale.setSouth(random.nextInt(maxS - minS + 1) + minS);
+                sale.setCentral(random.nextInt(maxC - minC + 1) + minC);
+                sale.setCar(cars.get(i));
+                sales.add(sale);
+            }
+            cars.get(i).setSales(sales);
         }
         return carRepository.saveAll(cars);
     }

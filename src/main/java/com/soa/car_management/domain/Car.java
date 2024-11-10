@@ -2,6 +2,9 @@ package com.soa.car_management.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.Set;
+
 @Setter
 @Getter
 @Entity
@@ -24,7 +27,8 @@ public class Car {
 
     private String image; // Hình ảnh
 
-    private Integer sale; // Doanh số
+    @OneToMany(mappedBy="car",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private Set<Sale> sales;// Doanh số
 
     private String company; // Hãng xe
     // Động cơ/hộp số
