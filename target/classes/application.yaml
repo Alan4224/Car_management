@@ -5,10 +5,17 @@ server:
 
 spring:
   datasource:
+<<<<<<< HEAD
     url: "jdbc:mysql://localhost:3306/car_management"
     username: "root"
     password: 123456
     #driver-class-name = com.mysql.cj.jdbc.Driver
+=======
+    url: ${MYSQL_URL:}
+    username: ${MYSQL_USERNAME:}
+    password: ${MYSQL_PASSWORD:}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+>>>>>>> 3bfe0f3575d858a612d0379e1f73c420f10451a7
 
   jpa:
     hibernate:

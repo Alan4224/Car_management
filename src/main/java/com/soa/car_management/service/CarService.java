@@ -17,9 +17,6 @@ public interface CarService {
     List<Car> getCarByCompanyAndName(String company, String carName);
     List<Car> getCarByCompanyAndNameAndVersion(String company, String carName,String carVersion);
     List<Car> getAllCar();
-    List<String> getALlPrice();
-    List<Long> getALlPriceConverted();
-    public void updatePriceToInt(List<String> price);
     Car createCar(Car car);
     Car updateCar(String id, CarUpdateRequest carUpdateRequest);
     void deleteCar(String id);
