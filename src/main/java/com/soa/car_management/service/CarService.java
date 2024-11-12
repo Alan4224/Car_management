@@ -1,7 +1,7 @@
 package com.soa.car_management.service;
 
-import com.soa.car_management.domain.Car;
-import com.soa.car_management.domain.request.CarUpdateRequest;
+import com.soa.car_management.domain.entity.Car;
+import com.soa.car_management.domain.dto.CarUpdateRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

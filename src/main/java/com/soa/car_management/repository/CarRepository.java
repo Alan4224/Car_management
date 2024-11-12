@@ -1,6 +1,6 @@
 package com.soa.car_management.repository;
 
-import com.soa.car_management.domain.Car;
+import com.soa.car_management.domain.entity.Car;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

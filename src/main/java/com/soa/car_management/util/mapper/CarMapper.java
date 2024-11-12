@@ -1,7 +1,7 @@
 package com.soa.car_management.util.mapper;
 
-import com.soa.car_management.domain.Car;
-import com.soa.car_management.domain.request.CarUpdateRequest;
+import com.soa.car_management.domain.entity.Car;
+import com.soa.car_management.domain.dto.CarUpdateRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 

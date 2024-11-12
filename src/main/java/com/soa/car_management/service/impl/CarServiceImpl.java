@@ -1,7 +1,7 @@
 package com.soa.car_management.service.impl;
 
-import com.soa.car_management.domain.Car;
-import com.soa.car_management.domain.request.CarUpdateRequest;
+import com.soa.car_management.domain.entity.Car;
+import com.soa.car_management.domain.dto.CarUpdateRequest;
 import com.soa.car_management.repository.CarRepository;
 import com.soa.car_management.service.CarService;
 import com.soa.car_management.util.mapper.CarMapper;
@@ -18,7 +18,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -50,6 +49,7 @@ public class CarServiceImpl implements CarService {
         return carRepository.findAllPrice();
     }
 
+
     @Override
     public List<Long> getALlPriceConverted() {
         List<String> temp = new ArrayList<>(carRepository.findAllPrice());
@@ -61,9 +61,7 @@ public class CarServiceImpl implements CarService {
     public List<String> getAllCompany() {
         return carRepository.findAllCompanies();
     }
-    public List<String> getAllId(){
-        return carRepository.findAllId();
-    }
+
     @Override
     public List<Car> getCarByCompany(String carCompany) {
         return carRepository.findAllByCompany(carCompany);
