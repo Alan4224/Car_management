@@ -9,6 +9,8 @@ import java.util.List;
 @Service
 public interface CarService {
 
+  //  List<String> getALlPrice();
+
     List<String> getAllCompany();
     List<String> getAllCarName(String company);
     List<String> getAllVersion(String company,String carName);

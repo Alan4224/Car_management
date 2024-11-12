@@ -5,7 +5,6 @@ import com.soa.car_management.domain.dto.CarUpdateRequest;
 import com.soa.car_management.repository.CarRepository;
 import com.soa.car_management.service.CarService;
 import com.soa.car_management.util.mapper.CarMapper;
-import jakarta.transaction.Transactional;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -44,18 +43,6 @@ public class CarServiceImpl implements CarService {
         return carRepository.findAllVerSion(company, carName);
     }
 
-    @Override
-    public List<String> getALlPrice() {
-        return carRepository.findAllPrice();
-    }
-
-
-    @Override
-    public List<Long> getALlPriceConverted() {
-        List<String> temp = new ArrayList<>(carRepository.findAllPrice());
-        List<Long> result = convertPrice(temp);
-        return result;
-    }
 
     @Override
     public List<String> getAllCompany() {
@@ -199,17 +186,17 @@ public class CarServiceImpl implements CarService {
         }
         return convertedPrice;
     }
-    @Transactional
-    @Override
-    public void updatePriceToInt(List<String> price){
-        List<String> Ids = getAllId();
-        List<String> convertedPrice = convertPrice(price).stream().map(String::valueOf).toList();
-        for (int i = 0; i < Ids.size(); i++){
-            Car car = carRepository.findById(Ids.get(i)).orElseThrow(() -> new RuntimeException("Car not found"));
-            car.setPrice(convertedPrice.get(i).toString());
-            //car.setPrice(convertedPrice.get(i));
-            carRepository.save(car);
-        }
-    }
+//    @Transactional
+//    @Override
+//    public void updatePriceToInt(List<String> price){
+//        List<String> Ids = getAllId();
+//        List<String> convertedPrice = convertPrice(price).stream().map(String::valueOf).toList();
+//        for (int i = 0; i < Ids.size(); i++){
+//            Car car = carRepository.findById(Ids.get(i)).orElseThrow(() -> new RuntimeException("Car not found"));
+//            car.setPrice(convertedPrice.get(i).toString());
+//            //car.setPrice(convertedPrice.get(i));
+//            carRepository.save(car);
+//        }
+
     //END CRAW DATA*/
 }

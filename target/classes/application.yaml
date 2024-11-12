@@ -5,20 +5,16 @@ server:
 
 spring:
   datasource:
-<<<<<<< HEAD
-    url: "jdbc:mysql://localhost:3306/car_management"
+    url: "jdbc:mysql://root:BtabatiqSSQELrdLqPqjvTXvHXkiySbT@junction.proxy.rlwy.net:12093/railway"
     username: "root"
-    password: 123456
-    #driver-class-name = com.mysql.cj.jdbc.Driver
-=======
-    url: ${MYSQL_URL:}
-    username: ${MYSQL_USERNAME:}
-    password: ${MYSQL_PASSWORD:}
-    driver-class-name: com.mysql.cj.jdbc.Driver
->>>>>>> 3bfe0f3575d858a612d0379e1f73c420f10451a7
+    password: BtabatiqSSQELrdLqPqjvTXvHXkiySbT
+    driver-class-name : com.mysql.cj.jdbc.Driver
 
   jpa:
     hibernate:
       #ddl-auto: create
       ddl-auto: update
     show-sql: true
+springdoc:
+  swagger-ui:
+    path: /documentforvananh
