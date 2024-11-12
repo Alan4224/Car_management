@@ -83,8 +83,11 @@ public class CarController {
     }
     @GetMapping("/price_int")
     ResponseEntity<List<String>> getAllPriceConverted(){
+        //carService.updatePriceToInt(carService.getALlPrice());
         return ResponseEntity.ok(carService.getALlPriceConverted().stream().map(String::valueOf).collect(Collectors.toList()));
     }
+    @PutMapping("/prices") public void updatePrices()
+    { carService.updatePriceToInt(carService.getALlPrice()); }
     @Operation(summary = "Get all car names by company", description = "Retrieve a list of all car names for a specific company")
     @GetMapping("/dong-xe/{company}")
     ResponseEntity<List<String>> getAllCarNames(@Parameter(description = "Name of the company")@PathVariable String company){

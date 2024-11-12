@@ -5,6 +5,7 @@ import com.soa.car_management.domain.request.CarUpdateRequest;
 import com.soa.car_management.repository.CarRepository;
 import com.soa.car_management.service.CarService;
 import com.soa.car_management.util.mapper.CarMapper;
+import jakarta.transaction.Transactional;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -17,6 +18,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -59,8 +61,9 @@ public class CarServiceImpl implements CarService {
     public List<String> getAllCompany() {
         return carRepository.findAllCompanies();
     }
-
-
+    public List<String> getAllId(){
+        return carRepository.findAllId();
+    }
     @Override
     public List<Car> getCarByCompany(String carCompany) {
         return carRepository.findAllByCompany(carCompany);
@@ -197,6 +200,18 @@ public class CarServiceImpl implements CarService {
             convertedPrice.add(Long.parseLong(input));
         }
         return convertedPrice;
+    }
+    @Transactional
+    @Override
+    public void updatePriceToInt(List<String> price){
+        List<String> Ids = getAllId();
+        List<String> convertedPrice = convertPrice(price).stream().map(String::valueOf).toList();
+        for (int i = 0; i < Ids.size(); i++){
+            Car car = carRepository.findById(Ids.get(i)).orElseThrow(() -> new RuntimeException("Car not found"));
+            car.setPrice(convertedPrice.get(i).toString());
+            //car.setPrice(convertedPrice.get(i));
+            carRepository.save(car);
+        }
     }
     //END CRAW DATA*/
 }

@@ -19,6 +19,7 @@ public interface CarService {
     List<Car> getAllCar();
     List<String> getALlPrice();
     List<Long> getALlPriceConverted();
+    public void updatePriceToInt(List<String> price);
     Car createCar(Car car);
     Car updateCar(String id, CarUpdateRequest carUpdateRequest);
     void deleteCar(String id);
