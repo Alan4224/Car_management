@@ -1,5 +1,6 @@
 package com.soa.car_management.service.impl;
 
+import com.soa.car_management.domain.dto.PriceRangeDTO;
 import com.soa.car_management.domain.dto.SaleFuelDTO;
 import com.soa.car_management.domain.dto.SaleMonthDTO;
 import com.soa.car_management.domain.dto.SalePlaceDTO;
@@ -29,5 +30,10 @@ public class SaleServiceImpl implements SaleService {
     @Override
     public List<SalePlaceDTO> salePlace() {
         return SaleMapper.toSalePlaceDTO(saleRepository.salePlace());
+    }
+
+    @Override
+    public List<PriceRangeDTO> priceRange() {
+        return SaleMapper.toPriceRangeDTO(saleRepository.priceRange());
     }
 }

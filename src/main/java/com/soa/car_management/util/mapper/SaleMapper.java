@@ -1,5 +1,6 @@
 package com.soa.car_management.util.mapper;
 
+import com.soa.car_management.domain.dto.PriceRangeDTO;
 import com.soa.car_management.domain.dto.SaleFuelDTO;
 import com.soa.car_management.domain.dto.SaleMonthDTO;
 import com.soa.car_management.domain.dto.SalePlaceDTO;
@@ -14,7 +15,8 @@ public class SaleMapper {
             SaleMonthDTO dto = new SaleMonthDTO();
             dto.setCompany((String) obj[0]);
             dto.setTotalSale(((Number) obj[1]).intValue());
-            saleMonthDTOS.add(dto); }
+            saleMonthDTOS.add(dto);
+        }
         return saleMonthDTOS;
     }
 
@@ -24,7 +26,8 @@ public class SaleMapper {
             SaleFuelDTO dto = new SaleFuelDTO();
             dto.setFuelType((String) obj[0]);
             dto.setTotalSale(((Number) obj[1]).intValue());
-            saleFuelDTOS.add(dto); }
+            saleFuelDTOS.add(dto);
+        }
         return saleFuelDTOS;
     }
 
@@ -38,7 +41,19 @@ public class SaleMapper {
             dto.setCentral(((Number) obj[3]).intValue());
             dto.setSouth(((Number) obj[4]).intValue());
             dto.setTotalSale(((Number) obj[5]).intValue());
-            salePlaceDTOS.add(dto); }
+            salePlaceDTOS.add(dto);
+        }
         return salePlaceDTOS;
+    }
+
+    public static List<PriceRangeDTO> toPriceRangeDTO(Object[][] objects){
+        List<PriceRangeDTO> priceRangeDTOS =new ArrayList<>();
+        for (Object[] obj : objects) {
+            PriceRangeDTO dto = new PriceRangeDTO();
+            dto.setPriceRange((String) obj[1]);
+            dto.setTotalSale(((Number) obj[0]).intValue());
+            priceRangeDTOS.add(dto);
+        }
+        return priceRangeDTOS;
     }
 }

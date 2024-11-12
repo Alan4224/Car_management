@@ -43,7 +43,6 @@ public class CarServiceImpl implements CarService {
         return carRepository.findAllVerSion(company, carName);
     }
 
-
     @Override
     public List<String> getAllCompany() {
         return carRepository.findAllCompanies();
@@ -174,29 +173,5 @@ public class CarServiceImpl implements CarService {
         Boolean value = hasCheckIcon(element);
         car.getClass().getMethod(methodName, Boolean.class).invoke(car, value);
     }
-    public List<Long> convertPrice(List<String> price){
-        List<Long> convertedPrice = new ArrayList<>();
-        for (int i = 0; i < price.size(); i++)
-        {
-            String input = price.get(i).toLowerCase();
-           if (!input.contains("triệu")) input = input.replaceAll("tỷ", "000000000");
-            input = input.replaceAll("triệu", "000000");
-            input = input.replaceAll("[^\\d]", "");
-            convertedPrice.add(Long.parseLong(input));
-        }
-        return convertedPrice;
-    }
-//    @Transactional
-//    @Override
-//    public void updatePriceToInt(List<String> price){
-//        List<String> Ids = getAllId();
-//        List<String> convertedPrice = convertPrice(price).stream().map(String::valueOf).toList();
-//        for (int i = 0; i < Ids.size(); i++){
-//            Car car = carRepository.findById(Ids.get(i)).orElseThrow(() -> new RuntimeException("Car not found"));
-//            car.setPrice(convertedPrice.get(i).toString());
-//            //car.setPrice(convertedPrice.get(i));
-//            carRepository.save(car);
-//        }
-
     //END CRAW DATA*/
 }

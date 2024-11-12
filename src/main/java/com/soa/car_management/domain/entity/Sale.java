@@ -13,10 +13,10 @@ public class Sale {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    private Integer month;
-    private Integer north;
-    private Integer central;
-    private Integer south;
+    private Integer month; // Tháng
+    private Integer north; // Bắc
+    private Integer central; // Trung
+    private Integer south; // Nam
 
     @ManyToOne
     @JoinColumn(name = "car_id", nullable = false, referencedColumnName = "id")

@@ -1,5 +1,6 @@
 package com.soa.car_management.service;
 
+import com.soa.car_management.domain.dto.PriceRangeDTO;
 import com.soa.car_management.domain.dto.SaleFuelDTO;
 import com.soa.car_management.domain.dto.SaleMonthDTO;
 import com.soa.car_management.domain.dto.SalePlaceDTO;
@@ -12,4 +13,5 @@ public interface SaleService {
     List<SaleMonthDTO>topMonth(Integer month);
     List<SaleFuelDTO> saleFuel();
     List<SalePlaceDTO> salePlace();
+    List<PriceRangeDTO> priceRange();
 }
