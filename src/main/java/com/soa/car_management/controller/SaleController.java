@@ -1,5 +1,6 @@
 package com.soa.car_management.controller;
 
+import com.soa.car_management.domain.dto.PriceRangeDTO;
 import com.soa.car_management.domain.dto.SaleFuelDTO;
 import com.soa.car_management.domain.dto.SaleMonthDTO;
 import com.soa.car_management.domain.dto.SalePlaceDTO;
@@ -30,7 +31,7 @@ public class SaleController {
     }
 
     @GetMapping("/salefuel")
-    @Operation(summary = "Number of sale each fuel", description = "Number of sale each fuel for round graph")
+    @Operation(summary = "Number of sale each fuel", description = "Number of sale each fuel for round chart")
     ResponseEntity<List<SaleFuelDTO>> saleFuel(){
         return ResponseEntity.ok(saleService.saleFuel());
     }
@@ -39,5 +40,11 @@ public class SaleController {
     @Operation(summary = "Top 5 best seller cars", description = "Top 5 best seller cars for horizontal column chart")
     ResponseEntity<List<SalePlaceDTO>> salePlace(){
         return ResponseEntity.ok(saleService.salePlace());
+    }
+
+    @GetMapping("/pricerange")
+    @Operation(summary = "Price range from 500 triệu to 20 tỷ", description = "Price range for round chart")
+    ResponseEntity<List<PriceRangeDTO>> priceRange(){
+        return ResponseEntity.ok(saleService.priceRange());
     }
 }
