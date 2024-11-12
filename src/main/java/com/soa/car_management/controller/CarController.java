@@ -6,6 +6,7 @@ import com.soa.car_management.domain.dto.CarUpdateRequest;
 import com.soa.car_management.repository.CarRepository;
 import com.soa.car_management.service.CarService;
 
+import com.soa.car_management.service.impl.CarServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -18,6 +19,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -38,6 +40,20 @@ public class CarController {
     ResponseEntity<List<String>> getAllCompanies() {
         return ResponseEntity.ok(carService.getAllCompany());
     }
+
+    @Operation(summary = "Get all price", description = " Retrieve a list of price")
+    @GetMapping("/price")
+    ResponseEntity<List<String>> getALlPrice(){
+        return ResponseEntity.ok(carService.getALlPrice());
+    }
+    @GetMapping("/price_int")
+    ResponseEntity<List<String>> getAllPriceConverted(){
+        //carService.updatePriceToInt(carService.getALlPrice());
+        return ResponseEntity.ok(carService.getALlPriceConverted().stream().map(String::valueOf).collect(Collectors.toList()));
+    }
+
+    @PutMapping("/prices") public void updatePrices()
+    { carService.updatePriceToInt(carService.getALlPrice()); }
 
     @Operation(summary = "Get all car names by company", description = "Retrieve a list of all car names for a specific company")
     @GetMapping("/dong-xe/{company}")
