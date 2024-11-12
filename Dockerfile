@@ -1,4 +1,4 @@
-FROM maven:4.0.0-openjdk-22 AS build
+FROM maven:4.0.0-openjdk-18 AS build
 WORKDIR /app
 
 COPY . .
