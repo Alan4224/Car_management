@@ -44,9 +44,22 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
+    public List<String> getALlPrice() {
+        return carRepository.findAllPrice();
+    }
+
+    @Override
+    public List<Long> getALlPriceConverted() {
+        List<String> temp = new ArrayList<>(carRepository.findAllPrice());
+        List<Long> result = convertPrice(temp);
+        return result;
+    }
+
+    @Override
     public List<String> getAllCompany() {
         return carRepository.findAllCompanies();
     }
+
 
     @Override
     public List<Car> getCarByCompany(String carCompany) {
@@ -172,6 +185,18 @@ public class CarServiceImpl implements CarService {
         String methodName = "set" + attribute.substring(0, 1).toUpperCase() + attribute.substring(1);
         Boolean value = hasCheckIcon(element);
         car.getClass().getMethod(methodName, Boolean.class).invoke(car, value);
+    }
+    public List<Long> convertPrice(List<String> price){
+        List<Long> convertedPrice = new ArrayList<>();
+        for (int i = 0; i < price.size(); i++)
+        {
+            String input = price.get(i).toLowerCase();
+           if (!input.contains("triệu")) input = input.replaceAll("tỷ", "000000000");
+            input = input.replaceAll("triệu", "000000");
+            input = input.replaceAll("[^\\d]", "");
+            convertedPrice.add(Long.parseLong(input));
+        }
+        return convertedPrice;
     }
     //END CRAW DATA*/
 }

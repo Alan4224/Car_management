@@ -23,4 +23,7 @@ public interface CarRepository extends JpaRepository<Car,String> {
     List<Car> findAllByCompanyAndName(String company, String name);
 
     List<Car> findAllByCompanyAndNameAndVersion(String company, String name,String version);
+
+    @Query("SELECT DISTINCT c.price FROM Car c")
+    List<String> findAllPrice();
 }
