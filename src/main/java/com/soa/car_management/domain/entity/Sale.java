@@ -1,4 +1,4 @@
-package com.soa.car_management.domain;
+package com.soa.car_management.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;

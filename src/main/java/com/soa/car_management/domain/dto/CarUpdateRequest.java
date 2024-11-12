@@ -1,4 +1,4 @@
-package com.soa.car_management.domain.request;
+package com.soa.car_management.domain.dto;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -14,3 +14,6 @@ spring:
       #ddl-auto: create
       ddl-auto: update
     show-sql: true
+springdoc:
+  swagger-ui:
+    path: /documentforvananh

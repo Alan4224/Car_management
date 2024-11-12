@@ -1,7 +1,7 @@
 package com.soa.car_management.service.impl;
 
-import com.soa.car_management.domain.Car;
-import com.soa.car_management.domain.request.CarUpdateRequest;
+import com.soa.car_management.domain.entity.Car;
+import com.soa.car_management.domain.dto.CarUpdateRequest;
 import com.soa.car_management.repository.CarRepository;
 import com.soa.car_management.service.CarService;
 import com.soa.car_management.util.mapper.CarMapper;

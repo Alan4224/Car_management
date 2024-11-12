@@ -1,8 +1,8 @@
 package com.soa.car_management.controller;
 
-import com.soa.car_management.domain.Car;
-import com.soa.car_management.domain.Sale;
-import com.soa.car_management.domain.request.CarUpdateRequest;
+import com.soa.car_management.domain.entity.Car;
+import com.soa.car_management.domain.entity.Sale;
+import com.soa.car_management.domain.dto.CarUpdateRequest;
 import com.soa.car_management.repository.CarRepository;
 import com.soa.car_management.service.CarService;
 
@@ -26,42 +26,6 @@ import java.util.Set;
 public class CarController {
     @Autowired
     CarService carService;
-
-    @Autowired
-    CarRepository carRepository;
-
-    @GetMapping("/themtruong")
-    List<Car> them(){
-        Random random = new Random();
-        int originMinN = 300;
-        int originMaxN = 546;
-        int originMinC = 208;
-        int originMaxC = 334;
-        int originMinS = 238;
-        int originMaxS = 764;
-        List<Car> cars = carService.getAllCar();
-        for(int i =0;i<cars.size();i++){
-            Set<Sale> sales = new HashSet<>();
-            int chia=carRepository.findAllByCompanyAndName(cars.get(i).getCompany(),cars.get(i).getName()).size();
-            int minN = originMinN / chia;
-            int maxN = originMaxN / chia;
-            int minC = originMinC / chia;
-            int maxC = originMaxC / chia;
-            int minS = originMinS / chia;
-            int maxS = originMaxS / chia;
-            for(int j=1;j<13;j++){
-                Sale sale = new Sale();
-                sale.setMonth(j);
-                sale.setNorth(random.nextInt(maxN - minN + 1) + minN);
-                sale.setSouth(random.nextInt(maxS - minS + 1) + minS);
-                sale.setCentral(random.nextInt(maxC - minC + 1) + minC);
-                sale.setCar(cars.get(i));
-                sales.add(sale);
-            }
-            cars.get(i).setSales(sales);
-        }
-        return carRepository.saveAll(cars);
-    }
 
     @Operation(summary = "Crawl car data", description = "Crawl car data from external sources and store it in the system")
     @GetMapping("/crawdata")
