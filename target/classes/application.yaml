@@ -8,6 +8,7 @@ spring:
     url: "jdbc:mysql://localhost:3306/car_management"
     username: "root"
     password: 123456
+    #driver-class-name = com.mysql.cj.jdbc.Driver
 
   jpa:
     hibernate:
