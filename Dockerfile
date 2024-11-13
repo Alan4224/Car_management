@@ -6,7 +6,7 @@ COPY . .
 RUN mvn clean package -DskipTests
 
 # Run stage
-FROM openjdk:17-ea-22-slim
+FROM openjdk:17-slim
 WORKDIR /app
 
 COPY --from=build /app/target/car_management-0.0.1-SNAPSHOT.war app.war
