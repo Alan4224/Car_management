@@ -1,7 +1,6 @@
 package com.soa.car_management.util.mapper;
 
 import com.soa.car_management.domain.dto.GetAllDTO;
-import com.soa.car_management.domain.dto.SaleFuelDTO;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -19,7 +19,7 @@ public interface CarRepository extends JpaRepository<Car,String> {
     List<String> findAllVerSion(String company,String name);
 
     @Query(value = "SELECT c.company,c.name,c.version,c.engine_type,c.price \n" +
-            "FROM Car c\n" +
+            "FROM car c\n" +
             "ORDER BY c.company,c.name;"
             ,nativeQuery = true)
     Object[][] getAllCar();
