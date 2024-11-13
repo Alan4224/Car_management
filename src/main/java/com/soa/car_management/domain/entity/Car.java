@@ -312,4 +312,32 @@ public class Car {
 
     private String frontSuspension; // Treo trước
 
+    //
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getCompany() {
+        return company;
+    }
 }

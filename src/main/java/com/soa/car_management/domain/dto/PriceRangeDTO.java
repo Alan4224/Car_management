@@ -9,3 +9,4 @@ public class PriceRangeDTO {
     private String priceRange;
     private Integer totalSale;
 }
+
