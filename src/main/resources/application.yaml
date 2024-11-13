@@ -5,9 +5,9 @@ server:
 
 spring:
   datasource:
-    url: "jdbc:mysql-b4106b0-hoanganh04022004lhp-6ad8.d.aivencloud.com"
+    url: "jdbc:mysql://b4106b0-hoanganh04022004lhp-6ad8.d.aivencloud.com:3306/car_management"
     username: "avnadmin"
-    password: AVNS_hteBBGA87rWxWiYa659
+    password: "AVNS_hteBBGA87rWxWiYa659"
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
