@@ -1,8 +1,8 @@
-FROM maven:3.8.5-eclipse-temurin-23 AS build
+FROM maven:3.9.8-amazoncorretto-21 AS build
 COPY . .
 RUN mvn clean package -DskipTests
 
-FROM openjdk:17-jdk-slim
-COPY --from=build /target/car_management-0.0.1-SNAPSHOT.jar car_management.jar
+FROM amazoncorretto:21.0.4
+COPY --from=build app/target/*.jar app.jar
 EXPOSE 8080
 ENTRYPOINT ["java","-jar","demo.jar"]
