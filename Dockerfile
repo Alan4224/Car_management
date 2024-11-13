@@ -9,7 +9,7 @@ RUN mvn clean package -DskipTests
 FROM openjdk:17-ea-22-slim
 WORKDIR /app
 
-COPY --from=build /app/target/DrComputer-0.0.1-SNAPSHOT.war drcomputer.war
+COPY --from=build /app/target/car_management-0.0.1-SNAPSHOT.war app.war
 EXPOSE 8080
 
 ENTRYPOINT ["java", "-jar", "drcomputer.war"]
