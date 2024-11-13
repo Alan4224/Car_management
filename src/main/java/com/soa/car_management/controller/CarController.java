@@ -1,5 +1,6 @@
 package com.soa.car_management.controller;
 
+import com.soa.car_management.domain.dto.GetAllDTO;
 import com.soa.car_management.domain.entity.Car;
 import com.soa.car_management.domain.entity.Sale;
 import com.soa.car_management.domain.dto.CarUpdateRequest;
@@ -68,12 +69,12 @@ public class CarController {
 
     @GetMapping
     @Operation(summary = "Get car information", description = "Retrieve car information based on company, name, and version")
-    public ResponseEntity<List<Car>> getCarInfo( @Parameter(description = "Name of the company") @RequestParam(required = false) String company,
+    public ResponseEntity<Object> getCarInfo( @Parameter(description = "Name of the company") @RequestParam(required = false) String company,
                                                  @Parameter(description = "Name of the car") @RequestParam(required = false) String name,
                                                  @Parameter(description = "Version of the car") @RequestParam(required = false) String version) {
         if (company == null && name == null && version == null) {
             return ResponseEntity.ok(carService.getAllCar());
-        } else if (company != null && name == null && version == null) {
+        }else if (company != null && name == null && version == null) {
             return ResponseEntity.ok(carService.getCarByCompany(company));
         } else if (company != null && name != null && version == null) {
             return ResponseEntity.ok(carService.getCarByCompanyAndName(company, name));

@@ -18,6 +18,12 @@ public interface CarRepository extends JpaRepository<Car,String> {
     @Query("SELECT DISTINCT c.version FROM Car c   WHERE c.company = ?1 AND c.name = ?2")
     List<String> findAllVerSion(String company,String name);
 
+    @Query(value = "SELECT c.company,c.name,c.version,c.engine_type,c.price \n" +
+            "FROM Car c\n" +
+            "ORDER BY c.company,c.name;"
+            ,nativeQuery = true)
+    Object[][] getAllCar();
+
     List<Car> findAllByCompany(String company);
 
     List<Car> findAllByCompanyAndName(String company, String name);

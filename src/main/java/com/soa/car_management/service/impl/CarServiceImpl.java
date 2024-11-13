@@ -1,9 +1,11 @@
 package com.soa.car_management.service.impl;
 
+import com.soa.car_management.domain.dto.GetAllDTO;
 import com.soa.car_management.domain.entity.Car;
 import com.soa.car_management.domain.dto.CarUpdateRequest;
 import com.soa.car_management.repository.CarRepository;
 import com.soa.car_management.service.CarService;
+import com.soa.car_management.util.mapper.CarMapDTO;
 import com.soa.car_management.util.mapper.CarMapper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -28,9 +30,9 @@ public class CarServiceImpl implements CarService {
     CarMapper carMapper;
 
     @Override
-    public List<Car> getAllCar() {
+    public List<GetAllDTO> getAllCar() {
         System.out.println(carRepository.count());
-        return carRepository.findAll();
+        return CarMapDTO.toGetAllDTO(carRepository.getAllCar());
     }
 
     @Override
