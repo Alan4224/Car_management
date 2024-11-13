@@ -1,5 +1,5 @@
 # Build stage
-FROM maven:3.9.9-amazoncorretto-17-alpine AS build
+FROM maven:3-amazoncorretto-17-alpine AS build
 WORKDIR /app
 
 COPY . .
