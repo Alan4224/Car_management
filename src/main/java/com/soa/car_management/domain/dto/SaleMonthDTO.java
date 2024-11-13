@@ -9,3 +9,5 @@ public class SaleMonthDTO {
     private String company;
     private Integer totalSale;
 }
+
+

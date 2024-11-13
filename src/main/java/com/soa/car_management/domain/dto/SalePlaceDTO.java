@@ -13,3 +13,6 @@ public class SalePlaceDTO {
     private Integer south;
     private Integer totalSale;
 }
+
+
+
