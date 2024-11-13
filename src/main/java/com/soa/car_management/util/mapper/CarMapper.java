@@ -4,7 +4,9 @@ import com.soa.car_management.domain.entity.Car;
 import com.soa.car_management.domain.dto.CarUpdateRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
+import org.springframework.stereotype.Component;
 
+@Component
 @Mapper(componentModel = "spring")
 public interface CarMapper {
     void updateCarFromDto(CarUpdateRequest carUpdateRequest, @MappingTarget Car car);
