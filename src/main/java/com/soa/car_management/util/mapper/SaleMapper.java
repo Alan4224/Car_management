@@ -1,9 +1,6 @@
 package com.soa.car_management.util.mapper;
 
-import com.soa.car_management.domain.dto.PriceRangeDTO;
-import com.soa.car_management.domain.dto.SaleFuelDTO;
-import com.soa.car_management.domain.dto.SaleMonthDTO;
-import com.soa.car_management.domain.dto.SalePlaceDTO;
+import com.soa.car_management.domain.dto.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,13 +31,15 @@ public class SaleMapper {
     public static List<SalePlaceDTO> toSalePlaceDTO(Object[][] objects){
         List<SalePlaceDTO> salePlaceDTOS =new ArrayList<>();
         for (Object[] obj : objects) {
+            List<SalePlace> salePlaces=new ArrayList<>();
+            String[] regions={"Northern","Central","Southern","TotalSale"};
+            for(int i=0;i<4;i++){
+                SalePlace salePlace=new SalePlace(regions[i],((Number) obj[i+2]).intValue());
+                salePlaces.add(salePlace);
+            }
             SalePlaceDTO dto = new SalePlaceDTO();
-            dto.setCompany((String) obj[0]);
-            dto.setName((String) obj[1]);
-            dto.setNorth(((Number) obj[2]).intValue());
-            dto.setCentral(((Number) obj[3]).intValue());
-            dto.setSouth(((Number) obj[4]).intValue());
-            dto.setTotalSale(((Number) obj[5]).intValue());
+            dto.setCompanyAndName((String) obj[0]+" "+(String) obj[1]);
+            dto.setData(salePlaces);
             salePlaceDTOS.add(dto);
         }
         return salePlaceDTOS;
