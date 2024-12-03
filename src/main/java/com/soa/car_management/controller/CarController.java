@@ -1,9 +1,7 @@
 package com.soa.car_management.controller;
 
-import com.soa.car_management.domain.dto.GetAllDTO;
 import com.soa.car_management.domain.entity.Car;
 import com.soa.car_management.domain.entity.Sale;
-import com.soa.car_management.domain.dto.CarUpdateRequest;
 import com.soa.car_management.repository.CarRepository;
 import com.soa.car_management.service.CarService;
 
@@ -15,7 +13,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/car")
@@ -23,6 +24,42 @@ import java.util.List;
 public class CarController {
     @Autowired
     CarService carService;
+
+    @Autowired
+    CarRepository carRepository;
+
+    @GetMapping("/themtruong")
+    List<Car> them(){
+        Random random = new Random();
+        int originMinN = 0;
+        int originMaxN = 546;
+        int originMinC = 0;
+        int originMaxC = 334;
+        int originMinS = 0;
+        int originMaxS = 764;
+        List<Car> cars = carService.getAllCarInfo();
+        for(int i =0;i<cars.size();i++){
+            Set<Sale> sales = new HashSet<>();
+            int chia=carRepository.findAllByCompanyAndName(cars.get(i).getCompany(),cars.get(i).getName()).size();
+            int minN = originMinN / chia;
+            int maxN = originMaxN / chia;
+            int minC = originMinC / chia;
+            int maxC = originMaxC / chia;
+            int minS = originMinS / chia;
+            int maxS = originMaxS / chia;
+            for(int j=1;j<13;j++){
+                Sale sale = new Sale();
+                sale.setMonth(j);
+                sale.setNorth(random.nextInt(maxN - minN + 1) + minN);
+                sale.setSouth(random.nextInt(maxS - minS + 1) + minS);
+                sale.setCentral(random.nextInt(maxC - minC + 1) + minC);
+                sale.setCar(cars.get(i));
+                sales.add(sale);
+            }
+            cars.get(i).setSales(sales);
+        }
+        return carRepository.saveAll(cars);
+    }
 
     @Operation(summary = "Crawl car data", description = "Crawl car data from external sources and store it in the system")
     @GetMapping("/crawdata")
@@ -55,11 +92,6 @@ public class CarController {
         return ResponseEntity.status(HttpStatus.CREATED).body(carService.createCar(car));
     }
 
-    @PutMapping("/{id}")
-    @Operation(summary = "Update a car", description = "Update an existing car entry in the system")
-    public ResponseEntity<Car> updateCar( @Parameter(description = "ID of the car to be updated") @PathVariable String id, @RequestBody CarUpdateRequest carUpdateRequest) {
-        return ResponseEntity.ok(carService.updateCar(id, carUpdateRequest));
-    }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete a car", description = "Delete an existing car entry in the system")
