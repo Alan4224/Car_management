@@ -1,10 +1,16 @@
 package com.soa.car_management.repository;
 
 import com.soa.car_management.domain.entity.Sale;
+import com.soa.car_management.projection.PriceRangeProjection;
+import com.soa.car_management.projection.SaleFuelProjection;
+import com.soa.car_management.projection.SaleMonthProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
+
 public interface SaleRepository extends JpaRepository<Sale,String> {
+
     @Query(value = "SELECT c.company, SUM(s.north) + SUM(s.central) + SUM(s.south) AS totalsale " +
             "FROM car c JOIN sale s ON c.id = s.car_id " +
             "WHERE s.month = ?1 " +
@@ -12,7 +18,7 @@ public interface SaleRepository extends JpaRepository<Sale,String> {
             "ORDER BY totalsale DESC " +
             "LIMIT 10"
             , nativeQuery = true)
-    Object[][] topMonth(Integer month);
+    List<SaleMonthProjection> topMonth(Integer month);
 
     @Query(value = "SELECT \n" +
             "    CASE \n" +
@@ -20,14 +26,14 @@ public interface SaleRepository extends JpaRepository<Sale,String> {
             "        WHEN COALESCE(c.fuel_type, 'Xăng') IN ('Xăng+Điện', 'Xăng lai Hybrid') THEN 'Xăng lai Hybrid'\n" +
             "        WHEN COALESCE(c.fuel_type, 'Xăng') = 'Xăng' THEN 'Xăng'\n" +
             "        ELSE COALESCE(c.fuel_type, 'Unknown')\n" +
-            "    END AS normalized_fuel_type, \n" +
+            "    END AS fueltype, \n" +
             "    SUM(s.north) + SUM(s.central) + SUM(s.south) AS totalsale\n" +
             "FROM car c \n" +
             "JOIN sale s ON c.id = s.car_id\n" +
-            "GROUP BY normalized_fuel_type\n" +
+            "GROUP BY fueltype\n" +
             "ORDER BY totalsale DESC;"
             , nativeQuery = true)
-    Object[][] saleFuel();
+    List<SaleFuelProjection> saleFuel();
 
     @Query(value="SELECT c.company, c.name, SUM(s.north) AS north , SUM(s.central) AS central , SUM(s.south) AS south, \n" +
             "SUM(s.north) + SUM(s.central) + SUM(s.south) AS totalsale\n" +
@@ -37,7 +43,7 @@ public interface SaleRepository extends JpaRepository<Sale,String> {
             "ORDER BY totalsale DESC\n" +
             "LIMIT 5;"
             , nativeQuery = true)
-    Object[][] salePlace();
+    List<Object[]> salePlace();
 
     @Query(value = "SELECT SUM(s.north) + SUM(s.central) + SUM(s.south) AS totalsale, 'Trên 20 tỷ' AS priceRange \n" +
             "FROM car c JOIN sale s ON c.id = s.car_id \n" +
@@ -89,5 +95,5 @@ public interface SaleRepository extends JpaRepository<Sale,String> {
             "OR c.price LIKE '3__ triệu%' \n" +
             "OR c.price LIKE '4__ triệu%';"
             ,nativeQuery = true)
-    Object[][] priceRange();
+    List<PriceRangeProjection> priceRange();
 }
