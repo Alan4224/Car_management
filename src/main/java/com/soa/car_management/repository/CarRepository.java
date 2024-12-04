@@ -1,6 +1,7 @@
 package com.soa.car_management.repository;
 
 import com.soa.car_management.domain.entity.Car;
+import com.soa.car_management.projection.GetAllProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -22,7 +23,7 @@ public interface CarRepository extends JpaRepository<Car,String> {
             "FROM car c\n" +
             "ORDER BY c.company,c.name;"
             ,nativeQuery = true)
-    Object[][] getAllCar();
+    List<GetAllProjection> getAllCar();
 
     List<Car> findAllByCompany(String company);
 

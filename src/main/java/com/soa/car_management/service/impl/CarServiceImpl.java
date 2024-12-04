@@ -1,12 +1,9 @@
 package com.soa.car_management.service.impl;
 
-import com.soa.car_management.domain.dto.GetAllDTO;
 import com.soa.car_management.domain.entity.Car;
-import com.soa.car_management.domain.dto.CarUpdateRequest;
+import com.soa.car_management.projection.GetAllProjection;
 import com.soa.car_management.repository.CarRepository;
 import com.soa.car_management.service.CarService;
-import com.soa.car_management.util.mapper.CarMapDTO;
-import com.soa.car_management.util.mapper.CarMapper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -26,13 +23,15 @@ public class CarServiceImpl implements CarService {
     @Autowired
     CarRepository carRepository;
 
-    @Autowired
-    CarMapper carMapper;
+    @Override
+    public List<Car> getAllCarInfo(){
+        return carRepository.findAll();
+    }
 
     @Override
-    public List<GetAllDTO> getAllCar() {
+    public List<GetAllProjection> getAllCar() {
         System.out.println(carRepository.count());
-        return CarMapDTO.toGetAllDTO(carRepository.getAllCar());
+        return carRepository.getAllCar();
     }
 
     @Override
@@ -70,12 +69,6 @@ public class CarServiceImpl implements CarService {
         return carRepository.save(car);
     }
 
-    @Override
-    public Car updateCar(String id, CarUpdateRequest carUpdateRequest) {
-        Car car = carRepository.findById(id).orElseThrow();
-        carMapper.updateCarFromDto(carUpdateRequest,car);
-        return carRepository.save(car);
-    }
 
     @Override
     public void deleteCar(String id) {

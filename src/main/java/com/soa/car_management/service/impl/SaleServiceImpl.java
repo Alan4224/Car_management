@@ -1,15 +1,12 @@
 package com.soa.car_management.service.impl;
 
-import com.soa.car_management.domain.dto.PriceRangeDTO;
-import com.soa.car_management.domain.dto.SaleFuelDTO;
-import com.soa.car_management.domain.dto.SaleMonthDTO;
-import com.soa.car_management.domain.dto.SalePlaceDTO;
+import com.soa.car_management.projection.*;
 import com.soa.car_management.repository.SaleRepository;
 import com.soa.car_management.service.SaleService;
-import com.soa.car_management.util.mapper.SaleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -18,22 +15,36 @@ public class SaleServiceImpl implements SaleService {
     SaleRepository saleRepository;
 
     @Override
-    public List<SaleMonthDTO> topMonth(Integer month) {
-        return SaleMapper.toSaleMonthDTO(saleRepository.topMonth(month));
+    public List<SaleMonthProjection> topMonth(Integer month) {
+        return saleRepository.topMonth(month);
     }
 
     @Override
-    public List<SaleFuelDTO> saleFuel() {
-        return SaleMapper.toSaleFuelDTO(saleRepository.saleFuel());
+    public List<SaleFuelProjection> saleFuel() {
+        return saleRepository.saleFuel();
     }
 
     @Override
-    public List<SalePlaceDTO> salePlace() {
-        return SaleMapper.toSalePlaceDTO(saleRepository.salePlace());
+    public List<SalePlaceProjection> salePlace() {
+        List<SalePlaceProjection> salePlaceProjections =new ArrayList<>();
+        List<Object[]> objects = saleRepository.salePlace();
+        for (Object[] obj : objects) {
+            List<SalePlace> salePlaces=new ArrayList<>();
+            String[] regions={"Northern","Central","Southern","TotalSale"};
+            for(int i=0;i<4;i++){
+                SalePlace salePlace=new SalePlace(regions[i],((Number) obj[i+2]).intValue());
+                salePlaces.add(salePlace);
+            }
+            SalePlaceProjection dto = new SalePlaceProjection();
+            dto.setCompanyAndName((String) obj[0]+" "+(String) obj[1]);
+            dto.setData(salePlaces);
+            salePlaceProjections.add(dto);
+        }
+        return salePlaceProjections;
     }
 
     @Override
-    public List<PriceRangeDTO> priceRange() {
-        return SaleMapper.toPriceRangeDTO(saleRepository.priceRange());
+    public List<PriceRangeProjection> priceRange() {
+        return saleRepository.priceRange();
     }
 }

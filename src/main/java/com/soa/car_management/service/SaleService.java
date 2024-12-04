@@ -1,17 +1,17 @@
 package com.soa.car_management.service;
 
-import com.soa.car_management.domain.dto.PriceRangeDTO;
-import com.soa.car_management.domain.dto.SaleFuelDTO;
-import com.soa.car_management.domain.dto.SaleMonthDTO;
-import com.soa.car_management.domain.dto.SalePlaceDTO;
+import com.soa.car_management.projection.PriceRangeProjection;
+import com.soa.car_management.projection.SaleFuelProjection;
+import com.soa.car_management.projection.SaleMonthProjection;
+import com.soa.car_management.projection.SalePlaceProjection;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public interface SaleService {
-    List<SaleMonthDTO>topMonth(Integer month);
-    List<SaleFuelDTO> saleFuel();
-    List<SalePlaceDTO> salePlace();
-    List<PriceRangeDTO> priceRange();
+    List<SaleMonthProjection> topMonth(Integer month);
+    List<SaleFuelProjection> saleFuel();
+    List<SalePlaceProjection> salePlace();
+    List<PriceRangeProjection> priceRange();
 }
