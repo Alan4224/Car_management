@@ -5,9 +5,9 @@ server:
 
 spring:
   datasource:
-    url: ${MYSQL_URL:}
-    password: ${MYSQL_USERNAME:}
-    username: ${MYSQL_PASSWORD:}
+    url: "jdbc:mysql://localhost:3306/car_management"
+    username: "root"
+    password: "422004"
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:

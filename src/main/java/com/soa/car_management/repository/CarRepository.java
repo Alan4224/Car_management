@@ -25,10 +25,10 @@ public interface CarRepository extends JpaRepository<Car,String> {
             ,nativeQuery = true)
     List<GetAllProjection> getAllCar();
 
-    List<Car> findAllByCompany(String company);
-
-    List<Car> findAllByCompanyAndName(String company, String name);
-
-    List<Car> findAllByCompanyAndNameAndVersion(String company, String name,String version);
+//    List<Car> findAllByCompany(String company);
+//
+//    List<Car> findAllByCompanyAndName(String company, String name);
+//
+//    List<Car> findAllByCompanyAndNameAndVersion(String company, String name,String version);
 
 }

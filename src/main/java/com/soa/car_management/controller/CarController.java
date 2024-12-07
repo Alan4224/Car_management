@@ -36,18 +36,18 @@ public class CarController {
         return ResponseEntity.ok(carService.getAllCompany());
     }
 
-    @Operation(summary = "Get all car names by company", description = "Retrieve a list of all car names for a specific company")
-    @GetMapping("/dong-xe/{company}")
-    ResponseEntity<List<String>> getAllCarNames(@Parameter(description = "Name of the company")@PathVariable String company){
-        return ResponseEntity.ok(carService.getAllCarName(company));
-    }
-
-    @Operation(summary = "Get all car versions by company and car name", description = "Retrieve a list of all car versions for a specific company and car name")
-    @GetMapping("/phien-ban/{company}/{carName}")
-    ResponseEntity<List<String>> getAllCarVersions(@Parameter(description = "Name of the company") @PathVariable String company,
-                                                   @Parameter(description = "Name of the car")@PathVariable String carName){
-        return ResponseEntity.ok(carService.getAllVersion(company,carName));
-    }
+//    @Operation(summary = "Get all car names by company", description = "Retrieve a list of all car names for a specific company")
+//    @GetMapping("/dong-xe/{company}")
+//    ResponseEntity<List<String>> getAllCarNames(@Parameter(description = "Name of the company")@PathVariable String company){
+//        return ResponseEntity.ok(carService.getAllCarName(company));
+//    }
+//
+//    @Operation(summary = "Get all car versions by company and car name", description = "Retrieve a list of all car versions for a specific company and car name")
+//    @GetMapping("/phien-ban/{company}/{carName}")
+//    ResponseEntity<List<String>> getAllCarVersions(@Parameter(description = "Name of the company") @PathVariable String company,
+//                                                   @Parameter(description = "Name of the car")@PathVariable String carName){
+//        return ResponseEntity.ok(carService.getAllVersion(company,carName));
+//    }
 
     @PostMapping
     @Operation(summary = "Create a new car", description = "Create a new car entry in the system")
@@ -62,21 +62,21 @@ public class CarController {
         carService.deleteCar(id); return ResponseEntity.noContent().build();
     }
 
-    @GetMapping
-    @Operation(summary = "Get car information", description = "Retrieve car information based on company, name, and version")
-    public ResponseEntity<Object> getCarInfo( @Parameter(description = "Name of the company") @RequestParam(required = false) String company,
-                                              @Parameter(description = "Name of the car") @RequestParam(required = false) String name,
-                                              @Parameter(description = "Version of the car") @RequestParam(required = false) String version) {
-        if (company == null && name == null && version == null) {
-            return ResponseEntity.ok(carService.getAllCar());
-        }else if (company != null && name == null && version == null) {
-            return ResponseEntity.ok(carService.getCarByCompany(company));
-        } else if (company != null && name != null && version == null) {
-            return ResponseEntity.ok(carService.getCarByCompanyAndName(company, name));
-        } else if (company != null && name != null && version != null) {
-            return ResponseEntity.ok(carService.getCarByCompanyAndNameAndVersion(company, name, version));
-        }
-        return ResponseEntity.badRequest().body(null);
-    }
+//    @GetMapping
+//    @Operation(summary = "Get car information", description = "Retrieve car information based on company, name, and version")
+//    public ResponseEntity<Object> getCarInfo( @Parameter(description = "Name of the company") @RequestParam(required = false) String company,
+//                                              @Parameter(description = "Name of the car") @RequestParam(required = false) String name,
+//                                              @Parameter(description = "Version of the car") @RequestParam(required = false) String version) {
+//        if (company == null && name == null && version == null) {
+//            return ResponseEntity.ok(carService.getAllCar());
+//        }else if (company != null && name == null && version == null) {
+//            return ResponseEntity.ok(carService.getCarByCompany(company));
+//        } else if (company != null && name != null && version == null) {
+//            return ResponseEntity.ok(carService.getCarByCompanyAndName(company, name));
+//        } else if (company != null && name != null && version != null) {
+//            return ResponseEntity.ok(carService.getCarByCompanyAndNameAndVersion(company, name, version));
+//        }
+//        return ResponseEntity.badRequest().body(null);
+//    }
 }
 

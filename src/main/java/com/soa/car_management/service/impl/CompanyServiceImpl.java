@@ -2,6 +2,8 @@ package com.soa.car_management.service.impl;
 
 import com.soa.car_management.domain.entity.Car;
 import com.soa.car_management.domain.entity.Company;
+import com.soa.car_management.projection.CarDetailDTO;
+import com.soa.car_management.projection.CompanyDetailDTO;
 import com.soa.car_management.projection.CompanyLabelProjection;
 import com.soa.car_management.repository.CarRepository;
 import com.soa.car_management.repository.CompanyRepository;
@@ -27,6 +29,27 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public List<CompanyLabelProjection> getLabel() {
         return companyRepository.findAllProjectedBy();
+    }
+
+    @Override
+    public CompanyDetailDTO getDetail(String name){
+        List<Object[]> comDt = companyRepository.findCompanyDetailByName(name);
+        CompanyDetailDTO companyDetailDTO = new CompanyDetailDTO();
+        companyDetailDTO.setName((String) comDt.getFirst()[0]);
+        companyDetailDTO.setImg((String) comDt.getFirst()[1]);
+        companyDetailDTO.setDescription((String) comDt.getFirst()[2]);
+        List<Object[]> carDt= companyRepository.findCarDetailsByCompanyName(name);
+        List<CarDetailDTO> carDetailDTOS = new ArrayList<>();
+        for(Object[] obj : carDt){
+            CarDetailDTO carDetailDTO = new CarDetailDTO();
+            carDetailDTO.setName((String) obj[0]);
+            carDetailDTO.setImg((String) obj[1]);
+            carDetailDTO.setPrice((String) obj[2]);
+            carDetailDTO.setLink((String) obj[3]);
+            carDetailDTOS.add(carDetailDTO);
+        }
+        companyDetailDTO.setCarDetailDTOS(carDetailDTOS);
+        return companyDetailDTO;
     }
 
     @Override

@@ -1,8 +1,10 @@
 package com.soa.car_management.service.impl;
 
 import com.soa.car_management.domain.entity.Car;
+import com.soa.car_management.domain.entity.Company;
 import com.soa.car_management.projection.GetAllProjection;
 import com.soa.car_management.repository.CarRepository;
+import com.soa.car_management.repository.CompanyRepository;
 import com.soa.car_management.service.CarService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -23,6 +25,9 @@ public class CarServiceImpl implements CarService {
     @Autowired
     CarRepository carRepository;
 
+    @Autowired
+    CompanyRepository companyRepository;
+
     @Override
     public List<Car> getAllCarInfo(){
         return carRepository.findAll();
@@ -34,35 +39,35 @@ public class CarServiceImpl implements CarService {
         return carRepository.getAllCar();
     }
 
-    @Override
-    public List<String> getAllCarName(String company) {
-        return carRepository.findAllName(company);
-    }
-
-    @Override
-    public List<String> getAllVersion(String company,String carName) {
-        return carRepository.findAllVerSion(company, carName);
-    }
+//    @Override
+//    public List<String> getAllCarName(String company) {
+//        return carRepository.findAllName(company);
+//    }
+//
+//    @Override
+//    public List<String> getAllVersion(String company,String carName) {
+//        return carRepository.findAllVerSion(company, carName);
+//    }
 
     @Override
     public List<String> getAllCompany() {
         return carRepository.findAllCompanies();
     }
 
-    @Override
-    public List<Car> getCarByCompany(String carCompany) {
-        return carRepository.findAllByCompany(carCompany);
-    }
-
-    @Override
-    public List<Car> getCarByCompanyAndName(String company, String name) {
-        return carRepository.findAllByCompanyAndName(company,name);
-    }
-
-    @Override
-    public List<Car> getCarByCompanyAndNameAndVersion(String company, String carName, String carVersion) {
-        return carRepository.findAllByCompanyAndNameAndVersion(company,carName,carVersion);
-    }
+//    @Override
+//    public List<Car> getCarByCompany(String carCompany) {
+//        return carRepository.findAllByCompany(carCompany);
+//    }
+//
+//    @Override
+//    public List<Car> getCarByCompanyAndName(String company, String name) {
+//        return carRepository.findAllByCompanyAndName(company,name);
+//    }
+//
+//    @Override
+//    public List<Car> getCarByCompanyAndNameAndVersion(String company, String carName, String carVersion) {
+//        return carRepository.findAllByCompanyAndNameAndVersion(company,carName,carVersion);
+//    }
 
     @Override
     public Car createCar(Car car) {
@@ -104,10 +109,11 @@ public class CarServiceImpl implements CarService {
                         Car car = craw(linkTrangKiThuat);
                         String linkImg = trangTongXe.select("a.thumb_img.thumb_5x3.detail-icon-gallery picture img").attr("src");
                         car.setImage(linkImg);
-                        String carCompany = trangTongXe.select("section.bg-agray div.breadcrumb ul.container li.active a").text();
-                        car.setCompany(carCompany);
-                        String name= car.getName().replace(car.getCompany(),"").trim();
-                        car.setName(name);
+//                        String carCompany = trangTongXe.select("section.bg-agray div.breadcrumb ul.container li.active a").text().trim();
+//                        Company company = companyRepository.findByName(carCompany);
+//                        car.setCompany(company);
+////                        String name= car.getName().replace(carCompany,"").trim();
+//                        car.setName(name);
                         cars.add(car);
                     }
                 }
