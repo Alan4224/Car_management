@@ -16,5 +16,5 @@ public interface SaleService {
     List<SaleFuelProjection> saleFuel();
     List<SalePlaceProjection> salePlace();
     List<PriceRangeProjection> priceRange();
-    List<Car> craw();
+    List<Sale> crawl();
 }

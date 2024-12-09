@@ -1,5 +1,7 @@
 package com.soa.car_management.controller;
 
+import com.soa.car_management.domain.entity.Car;
+import com.soa.car_management.domain.entity.Sale;
 import com.soa.car_management.projection.PriceRangeProjection;
 import com.soa.car_management.projection.SaleFuelProjection;
 import com.soa.car_management.projection.SaleMonthProjection;
@@ -23,6 +25,11 @@ import java.util.List;
 public class SaleController {
     @Autowired
     SaleService saleService;
+
+    @GetMapping("/crawl")
+    ResponseEntity<List<Sale>> crawl(){
+        return ResponseEntity.ok(saleService.crawl());
+    }
 
     @GetMapping("/topmonth")
     @Operation(summary = "Top 10 best seller companies", description = "Top 10 best seller company in a month for column chart")

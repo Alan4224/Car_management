@@ -39,35 +39,10 @@ public class CarServiceImpl implements CarService {
         return carRepository.getAllCar();
     }
 
-//    @Override
-//    public List<String> getAllCarName(String company) {
-//        return carRepository.findAllName(company);
-//    }
-//
-//    @Override
-//    public List<String> getAllVersion(String company,String carName) {
-//        return carRepository.findAllVerSion(company, carName);
-//    }
-
     @Override
-    public List<String> getAllCompany() {
-        return carRepository.findAllCompanies();
+    public List<Car> getCarByCompanyAndNameAndVersion(String company, String carName, String carVersion) {
+        return carRepository.getAllByCompanyAndNameAndVersion(company,carName,carVersion);
     }
-
-//    @Override
-//    public List<Car> getCarByCompany(String carCompany) {
-//        return carRepository.findAllByCompany(carCompany);
-//    }
-//
-//    @Override
-//    public List<Car> getCarByCompanyAndName(String company, String name) {
-//        return carRepository.findAllByCompanyAndName(company,name);
-//    }
-//
-//    @Override
-//    public List<Car> getCarByCompanyAndNameAndVersion(String company, String carName, String carVersion) {
-//        return carRepository.findAllByCompanyAndNameAndVersion(company,carName,carVersion);
-//    }
 
     @Override
     public Car createCar(Car car) {
@@ -109,11 +84,13 @@ public class CarServiceImpl implements CarService {
                         Car car = craw(linkTrangKiThuat);
                         String linkImg = trangTongXe.select("a.thumb_img.thumb_5x3.detail-icon-gallery picture img").attr("src");
                         car.setImage(linkImg);
-//                        String carCompany = trangTongXe.select("section.bg-agray div.breadcrumb ul.container li.active a").text().trim();
-//                        Company company = companyRepository.findByName(carCompany);
-//                        car.setCompany(company);
-////                        String name= car.getName().replace(carCompany,"").trim();
-//                        car.setName(name);
+                        String carCompany = trangTongXe.select("section.bg-agray div.breadcrumb ul.container li.active a").text().trim();
+                        Company company = companyRepository.findByName(carCompany);
+                        car.setCompany(company);
+                        System.out.println(car.getName());
+                        System.out.println(linkTrangKiThuat);
+                        String name= car.getName().replace(carCompany,"").trim();
+                        car.setName(name);
                         cars.add(car);
                     }
                 }

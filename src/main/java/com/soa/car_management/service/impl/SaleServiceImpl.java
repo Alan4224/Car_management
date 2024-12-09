@@ -58,35 +58,34 @@ public class SaleServiceImpl implements SaleService {
     }
 
     @Override
-    public List<Car> craw(){
-//        Random random = new Random();
-//        int originMinN = 300;
-//        int originMaxN = 546;
-//        int originMinC = 208;
-//        int originMaxC = 334;
-//        int originMinS = 238;
-//        int originMaxS = 764;
+    public List<Sale> crawl(){
+        Random random = new Random();
+        int originMinN = 0;
+        int originMaxN = 546;
+        int originMinC = 0;
+        int originMaxC = 334;
+        int originMinS = 0;
+        int originMaxS = 764;
         List<Car> cars = carService.getAllCarInfo();
-//        for(int i =0;i<cars.size();i++){
-//            Set<Sale> sales = new HashSet<>();
-//            int chia=carRepository.findAllByCompanyAndName(cars.get(i).getCompany(),cars.get(i).getName()).size();
-//            int minN = originMinN / chia;
-//            int maxN = originMaxN / chia;
-//            int minC = originMinC / chia;
-//            int maxC = originMaxC / chia;
-//            int minS = originMinS / chia;
-//            int maxS = originMaxS / chia;
-//            for(int j=1;j<13;j++){
-//                Sale sale = new Sale();
-//                sale.setMonth(j);
-//                sale.setNorth(random.nextInt(maxN - minN + 1) + minN);
-//                sale.setSouth(random.nextInt(maxS - minS + 1) + minS);
-//                sale.setCentral(random.nextInt(maxC - minC + 1) + minC);
-//                sale.setCar(cars.get(i));
-//                sales.add(sale);
-//            }
-//            cars.get(i).setSales(sales);
-//        }
-        return carRepository.saveAll(cars);
+        List<Sale> sales = new ArrayList<>();
+        for(int i =0;i<cars.size();i++){
+            int chia=carRepository.getAllByCompanyAndName(cars.get(i).getCompany().getName(),cars.get(i).getName()).size();
+            int minN = originMinN / chia;
+            int maxN = originMaxN / chia;
+            int minC = originMinC / chia;
+            int maxC = originMaxC / chia;
+            int minS = originMinS / chia;
+            int maxS = originMaxS / chia;
+            for(int j=1;j<13;j++){
+                Sale sale = new Sale();
+                sale.setMonth(j);
+                sale.setNorth(random.nextInt(maxN - minN + 1) + minN);
+                sale.setSouth(random.nextInt(maxS - minS + 1) + minS);
+                sale.setCentral(random.nextInt(maxC - minC + 1) + minC);
+                sale.setCar(cars.get(i));
+                sales.add(sale);
+            }
+        }
+        return saleRepository.saveAll(sales);
     }
 }

@@ -1,8 +1,7 @@
 package com.soa.car_management.repository;
 
 import com.soa.car_management.domain.entity.Company;
-import com.soa.car_management.projection.CarDetailDTO;
-import com.soa.car_management.projection.CompanyDetailDTO;
+import com.soa.car_management.projection.CompanyDetailProjection;
 import com.soa.car_management.projection.CompanyLabelProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,21 +16,27 @@ public interface CompanyRepository extends JpaRepository<Company,String>  {
         List<CompanyLabelProjection> findAllProjectedBy();
 
         @Query(value = "SELECT \n" +
-                "    c.name AS name,\n" +
-                "    c.img AS img,\n" +
-                "    c.description AS description\n" +
-                "FROM company c\n" +
-                "WHERE c.name = ?1"
-                ,nativeQuery = true)
-        List<Object[]> findCompanyDetailByName(String name);
-
-        @Query(value = "SELECT cr.name, cr.image, cr.price, CONCAT('/dong-xe/', cr.name) AS link "
-                + "FROM company c "
-                + "JOIN company_cars cc ON c.id = cc.company_id " +
-                "JOIN car cr ON cc.cars_id = cr.id "
-                + "WHERE c.name = ?1 "
-                ,nativeQuery = true)
-        List<Object[]> findCarDetailsByCompanyName(String name);
+                "\tcom.name,\n" +
+                "    com.img,\n" +
+                "    com.description,\n" +
+                "    c.name as carname, \n" +
+                "    c.image as carimage, \n" +
+                "    concat(min(c.price),'-',max(c.price)) AS carprice, \n" +
+                "    ANY_VALUE(c.version) as version \n" +
+                "FROM \n" +
+                "    car c\n" +
+                "JOIN \n" +
+                "    company com ON c.company_id = com.id \n" +
+                "WHERE \n" +
+                "    com.name = :name \n" +
+                "GROUP BY \n" +
+                "    c.name,\n" +
+                "    com.name,\n" +
+                "    com.img,\n" +
+                "    com.description,\n" +
+                "\tc.image\n"
+        ,nativeQuery = true)
+        List<CompanyDetailProjection> findProjectedByName(@Param("name") String name);
 
         Company findByName(String name);
 }

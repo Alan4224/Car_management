@@ -1,9 +1,9 @@
 package com.soa.car_management.service.impl;
 
-import com.soa.car_management.domain.entity.Car;
 import com.soa.car_management.domain.entity.Company;
-import com.soa.car_management.projection.CarDetailDTO;
-import com.soa.car_management.projection.CompanyDetailDTO;
+import com.soa.car_management.projection.CarDetail;
+import com.soa.car_management.projection.CompanyDetail;
+import com.soa.car_management.projection.CompanyDetailProjection;
 import com.soa.car_management.projection.CompanyLabelProjection;
 import com.soa.car_management.repository.CarRepository;
 import com.soa.car_management.repository.CompanyRepository;
@@ -32,24 +32,21 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public CompanyDetailDTO getDetail(String name){
-        List<Object[]> comDt = companyRepository.findCompanyDetailByName(name);
-        CompanyDetailDTO companyDetailDTO = new CompanyDetailDTO();
-        companyDetailDTO.setName((String) comDt.getFirst()[0]);
-        companyDetailDTO.setImg((String) comDt.getFirst()[1]);
-        companyDetailDTO.setDescription((String) comDt.getFirst()[2]);
-        List<Object[]> carDt= companyRepository.findCarDetailsByCompanyName(name);
-        List<CarDetailDTO> carDetailDTOS = new ArrayList<>();
-        for(Object[] obj : carDt){
-            CarDetailDTO carDetailDTO = new CarDetailDTO();
-            carDetailDTO.setName((String) obj[0]);
-            carDetailDTO.setImg((String) obj[1]);
-            carDetailDTO.setPrice((String) obj[2]);
-            carDetailDTO.setLink((String) obj[3]);
-            carDetailDTOS.add(carDetailDTO);
-        }
-        companyDetailDTO.setCarDetailDTOS(carDetailDTOS);
-        return companyDetailDTO;
+    public CompanyDetail getDetail(String name){
+         List<CompanyDetailProjection> data = companyRepository.findProjectedByName(name);
+         List<CarDetail> carDetails = new ArrayList<>();
+         for (int i=0;i< data.size();i++){
+             String carName = data.get(i).getCarname();
+             String carImage= data.get(i).getCarimage();
+             String carPrice= data.get(i).getCarprice();
+             String carLink= data.get(i).getLink();
+             CarDetail carDetail = new CarDetail(carName,carImage,carPrice,carLink);
+             carDetails.add(carDetail);
+         }
+         String companyName = data.getFirst().getName();
+         String companyImg = data.getFirst().getImg();
+         String companyDescription = data.getFirst().getDescription();
+        return new CompanyDetail(companyName,companyImg,companyDescription,carDetails);
     }
 
     @Override
@@ -70,13 +67,6 @@ public class CompanyServiceImpl implements CompanyService {
                 company.setImg(img);
                 company.setName(name);
                 company.setDescription(description);
-                List<Car> cars = new ArrayList<>();
-                for (Car car : carRepository.findAll()){
-                    if(car.getCompany().equals(company.getName())){
-                        cars.add(car);
-                    }
-                }
-                company.setCars(cars);
                 coms.add(company);
             }
         }catch (Exception e){
