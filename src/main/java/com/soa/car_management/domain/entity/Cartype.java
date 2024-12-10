@@ -8,7 +8,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-public class Company {
+public class Cartype {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
@@ -18,6 +18,6 @@ public class Company {
     @Column(columnDefinition = "TEXT")
     private String  description;
 
-    @OneToMany(mappedBy = "company",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany
     List<Car> cars;
 }

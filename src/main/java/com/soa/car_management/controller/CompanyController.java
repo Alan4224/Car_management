@@ -1,14 +1,13 @@
 package com.soa.car_management.controller;
 
 import com.soa.car_management.domain.entity.Company;
+import com.soa.car_management.projection.CompanyDetail;
 import com.soa.car_management.projection.CompanyDetailProjection;
 import com.soa.car_management.projection.CompanyLabelProjection;
 import com.soa.car_management.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,8 +27,8 @@ public class CompanyController {
         return ResponseEntity.ok(companyService.getLabel());
     }
 
-//    @GetMapping("/{name}")
-//    ResponseEntity<List<CompanyDetailProjection>> getDetail(){
-//        return
-//    }
+    @GetMapping("/{name}")
+    ResponseEntity<CompanyDetail> getDetail(@PathVariable String name){
+        return ResponseEntity.ok(companyService.getDetail(name));
+    }
 }

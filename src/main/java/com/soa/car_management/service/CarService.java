@@ -10,12 +10,8 @@ import java.util.List;
 public interface CarService {
 
     List<Car> getAllCarInfo();
-    List<String> getAllCompany();
-    List<String> getAllCarName(String company);
-    List<String> getAllVersion(String company,String carName);
     List<Car> crawData();
-    List<Car> getCarByCompany(String carCompany);
-    List<Car> getCarByCompanyAndName(String company, String carName);
+
     List<Car> getCarByCompanyAndNameAndVersion(String company, String carName,String carVersion);
     List<GetAllProjection> getAllCar();
     Car createCar(Car car);
