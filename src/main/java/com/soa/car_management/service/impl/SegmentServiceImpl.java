@@ -33,8 +33,9 @@ public class SegmentServiceImpl implements SegmentService {
     public List<Segment> craw(){
         List<Segment> coms = new ArrayList<>();
         try {
+            //#phan-khuc-xe > div > div.phan-khuc-xe > ul:nth-child(4)
             Document trangTong = Jsoup.connect("https://vnexpress.net/oto-xe-may/v-car").get();
-            Elements phanKhuc = trangTong.select("div.phan-khuc-xe ul:nth-child(4) li a");
+            Elements phanKhuc = trangTong.select("div.phan-khuc-xe ul.grid__3 li a");
             List<String> linkPhanKhucs = phanKhuc.stream().map(element -> element.attr("href")).toList();
 
             for (String linkPhanKhuc : linkPhanKhucs) {
