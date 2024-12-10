@@ -12,7 +12,7 @@ public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
-
+    
     // Số lượng kho
     // Số lượng bán
     //tg nhận
