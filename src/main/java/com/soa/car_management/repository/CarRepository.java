@@ -10,14 +10,6 @@ import java.util.List;
 
 @Repository
 public interface CarRepository extends JpaRepository<Car,String> {
-    @Query("SELECT DISTINCT c.company FROM Car c")
-    List<String> findAllCompanies();
-
-    @Query("SELECT DISTINCT c.name FROM Car c   WHERE c.company = ?1")
-    List<String> findAllName(String company);
-
-    @Query("SELECT DISTINCT c.version FROM Car c   WHERE c.company = ?1 AND c.name = ?2")
-    List<String> findAllVerSion(String company,String name);
 
     @Query(value = "SELECT c.company,c.name,c.version,c.engine_type,c.price \n" +
             "FROM car c\n" +
@@ -25,10 +17,10 @@ public interface CarRepository extends JpaRepository<Car,String> {
             ,nativeQuery = true)
     List<GetAllProjection> getAllCar();
 
-    List<Car> findAllByCompany(String company);
+    @Query(value = "SELECT c.* from car c join company com on c.company_id = com.id where com.name = ?1 and c.name = ?2 ",nativeQuery = true)
+    List<Car> getAllByCompanyAndName(String company, String name);
 
-    List<Car> findAllByCompanyAndName(String company, String name);
-
-    List<Car> findAllByCompanyAndNameAndVersion(String company, String name,String version);
+    @Query(value = "SELECT c.* from car c join company com on c.company_id = com.id where com.name = ?1 and c.name = ?2 and c.version = ?3 ",nativeQuery = true)
+    List<Car> getAllByCompanyAndNameAndVersion(String company, String name,String version);
 
 }

@@ -1,8 +1,10 @@
 package com.soa.car_management.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.Set;
 
 @Setter
@@ -28,9 +30,13 @@ public class Car {
     private String image; // Hình ảnh
 
     @OneToMany(mappedBy="car",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private Set<Sale> sales;// Doanh số
+    private List<Sale> sales;// Doanh số
 
-    private String company; // Hãng xe
+    @ManyToOne
+    @JoinColumn(name = "company_id",nullable = false, referencedColumnName = "id")
+    @JsonBackReference
+    private Company company; // Hãng xe
+
     // Động cơ/hộp số
     private String engineType; // Kiểu động cơ
 

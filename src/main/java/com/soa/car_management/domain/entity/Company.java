@@ -18,6 +18,6 @@ public class Company {
     @Column(columnDefinition = "TEXT")
     private String  description;
 
-    @OneToMany
+    @OneToMany(mappedBy = "company",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     List<Car> cars;
 }
