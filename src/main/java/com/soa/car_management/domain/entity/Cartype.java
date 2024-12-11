@@ -18,6 +18,6 @@ public class Cartype {
     @Column(columnDefinition = "TEXT")
     private String  description;
 
-    @OneToMany
+    @OneToMany(mappedBy = "cartype",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     List<Car> cars;
 }

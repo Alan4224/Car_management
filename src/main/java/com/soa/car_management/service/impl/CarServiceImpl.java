@@ -1,10 +1,14 @@
 package com.soa.car_management.service.impl;
 
 import com.soa.car_management.domain.entity.Car;
+import com.soa.car_management.domain.entity.Cartype;
 import com.soa.car_management.domain.entity.Company;
+import com.soa.car_management.domain.entity.Segment;
 import com.soa.car_management.projection.GetAllProjection;
 import com.soa.car_management.repository.CarRepository;
+import com.soa.car_management.repository.CartypeRepository;
 import com.soa.car_management.repository.CompanyRepository;
+import com.soa.car_management.repository.SegmentRepository;
 import com.soa.car_management.service.CarService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -27,6 +31,12 @@ public class CarServiceImpl implements CarService {
 
     @Autowired
     CompanyRepository companyRepository;
+
+    @Autowired
+    SegmentRepository segmentRepository;
+
+    @Autowired
+    CartypeRepository cartypeRepository;
 
     @Override
     public List<Car> getAllCarInfo(){
@@ -84,6 +94,9 @@ public class CarServiceImpl implements CarService {
                         Car car = craw(linkTrangKiThuat);
                         String linkImg = trangTongXe.select("a.thumb_img.thumb_5x3.detail-icon-gallery picture img").attr("src");
                         car.setImage(linkImg);
+                        String phanKhuc = trangTongXe.select("#tongquan div.thumb-big a.tag").text().trim();
+                        Segment segment = segmentRepository.findByName(phanKhuc);
+                        car.setSegment(segment);
                         String carCompany = trangTongXe.select("section.bg-agray div.breadcrumb ul.container li.active a").text().trim();
                         Company company = companyRepository.findByName(carCompany);
                         car.setCompany(company);
@@ -120,12 +133,16 @@ public class CarServiceImpl implements CarService {
                 String[] parts = priceAndVersion.split(" - ");
                 car.setPrice(parts[1]);
                 car.setVersion(parts[0]);
+                String loaiXe = doc.select("#detail-tskt-car div.detail-xe__top.clearfix div div.flex.tag.mb20.hidde-mobile a.itemt").first().text();
+                String loaiXe2 = loaiXe.replace("Loại xe: ","").trim();
+                Cartype cartype= cartypeRepository.findByName(loaiXe2);
+                car.setCartype(cartype);
                 for (int i = 0; i < labels.size(); i++) {
                     if (labels.get(i).equals(label)) {
-                        String attribute = attributes[i + 7].getName();
-                        if (attributes[i + 7].getType().equals(String.class)) {
+                        String attribute = attributes[i + 9].getName();
+                        if (attributes[i + 9].getType().equals(String.class)) {
                             setAttributeString(attribute, value, car);
-                        } else if (attributes[i + 7].getType().equals(Boolean.class)) {
+                        } else if (attributes[i + 9].getType().equals(Boolean.class)) {
                             setAttributeBoolean(attribute, element, car);
                         }
                     }

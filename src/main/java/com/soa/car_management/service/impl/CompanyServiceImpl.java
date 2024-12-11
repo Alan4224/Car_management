@@ -5,7 +5,6 @@ import com.soa.car_management.projection.CarDetail;
 import com.soa.car_management.projection.CompanyDetail;
 import com.soa.car_management.projection.CompanyDetailProjection;
 import com.soa.car_management.projection.CompanyLabelProjection;
-import com.soa.car_management.repository.CarRepository;
 import com.soa.car_management.repository.CompanyRepository;
 import com.soa.car_management.service.CompanyService;
 import org.jsoup.Jsoup;
@@ -22,9 +21,6 @@ import java.util.List;
 public class CompanyServiceImpl implements CompanyService {
     @Autowired
     CompanyRepository companyRepository;
-
-    @Autowired
-    CarRepository carRepository;
 
     @Override
     public List<CompanyLabelProjection> getLabel() {

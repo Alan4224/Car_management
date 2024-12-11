@@ -1,9 +1,9 @@
 package com.soa.car_management.service.impl;
 
-import com.soa.car_management.domain.entity.Car;
 import com.soa.car_management.domain.entity.Cartype;
+import com.soa.car_management.projection.CarDetail;
+import com.soa.car_management.projection.CartypeDetail;
 import com.soa.car_management.projection.CartypeProjection;
-import com.soa.car_management.repository.CarRepository;
 import com.soa.car_management.repository.CartypeRepository;
 import com.soa.car_management.service.CartypeService;
 import org.jsoup.Jsoup;
@@ -20,8 +20,25 @@ public class CartypeServiceImpl implements CartypeService {
     @Autowired
     CartypeRepository cartypeRepository;
 
-    @Autowired
-    CarRepository carRepository;
+    @Override
+    public CartypeDetail getDetail(String name) {
+        List<Object[]> data = cartypeRepository.findProjectedByName(name);
+        List<CarDetail> carDetails = new ArrayList<>();
+        for(Object[] obj : data){
+            String carName = (String) obj[3];
+            String carImage = (String) obj[4];
+            String carPrice = (String) obj[5];
+            String carVersion = (String) obj[6];
+            String company = (String) obj[7];
+            String carLink = String.format("/car?company=%s&name=%s&version=%s",company,carName,carVersion);
+            CarDetail carDetail = new CarDetail(carName,carImage,carPrice,carLink);
+            carDetails.add(carDetail);
+        }
+        String ctpName = (String) data.getFirst()[0];
+        String ctpImg = (String) data.getFirst()[1];
+        String description = (String) data.getFirst()[2];
+        return new CartypeDetail(ctpName,ctpImg,description,carDetails);
+    }
 
     @Override
     public List<CartypeProjection> getLabel1() {
@@ -46,14 +63,7 @@ public class CartypeServiceImpl implements CartypeService {
                 cartype.setImg(img);
                 cartype.setName(name);
                 cartype.setDescription(description1+description2);
-//                List<Car> cars = new ArrayList<>();
-//                for (Car car : carRepository.findAll()){
-//                    if(car.getCartype().equals(cartype.getName())){
-//                        cars.add(car);
-//                    }
-//                }
-//                cartype.setCars(cars);
-//                types.add(cartype);
+                types.add(cartype);
             }
         }catch (Exception e){
             throw new RuntimeException(e);

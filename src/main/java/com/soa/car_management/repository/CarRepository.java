@@ -11,9 +11,10 @@ import java.util.List;
 @Repository
 public interface CarRepository extends JpaRepository<Car,String> {
 
-    @Query(value = "SELECT c.company,c.name,c.version,c.engine_type,c.price \n" +
+    @Query(value = "SELECT com.name as company,c.name,c.version,c.engine_type,c.price\n" +
             "FROM car c\n" +
-            "ORDER BY c.company,c.name;"
+            "join company com on c.company_id = com.id\n" +
+            "ORDER BY com.name,c.name;"
             ,nativeQuery = true)
     List<GetAllProjection> getAllCar();
 

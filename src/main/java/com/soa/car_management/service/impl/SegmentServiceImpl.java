@@ -1,10 +1,9 @@
 package com.soa.car_management.service.impl;
 
-import com.soa.car_management.domain.entity.Car;
-import com.soa.car_management.domain.entity.Company;
 import com.soa.car_management.domain.entity.Segment;
+import com.soa.car_management.projection.CarDetail;
+import com.soa.car_management.projection.SegmentDetail;
 import com.soa.car_management.projection.SegmentDetailProjection;
-import com.soa.car_management.repository.CarRepository;
 import com.soa.car_management.repository.SegmentRepository;
 import com.soa.car_management.service.SegmentService;
 import org.jsoup.Jsoup;
@@ -22,11 +21,27 @@ public class SegmentServiceImpl implements SegmentService {
     @Autowired
     SegmentRepository segmentRepository;
 
-    @Autowired
-    CarRepository carRepository;
+    @Override
+    public SegmentDetail getDetail(String name) {
+        List<Object[]> data = segmentRepository.findProjectedByName(name);
+        List<CarDetail> carDetails = new ArrayList<>();
+        for(Object[] obj : data){
+            String carName = (String) obj[2];
+            String carImage = (String) obj[3];
+            String carPrice = (String) obj[4];
+            String carVersion = (String) obj[5];
+            String company = (String) obj[6];
+            String carLink = String.format("/car?company=%s&name=%s&version=%s",company,carName,carVersion);
+            CarDetail carDetail = new CarDetail(carName,carImage,carPrice,carLink);
+            carDetails.add(carDetail);
+        }
+        String segName = (String) data.getFirst()[0];
+        String description = (String) data.getFirst()[1];
+        return new SegmentDetail(segName,description,carDetails);
+    }
 
     @Override
-    public List<SegmentDetailProjection> getDetail() {
+    public List<SegmentDetailProjection> getLabel() {
         return segmentRepository.findAllProjectedBy();
     }
     @Override
@@ -41,19 +56,10 @@ public class SegmentServiceImpl implements SegmentService {
                 Document trangCon = Jsoup.connect("https://vnexpress.net" + linkPhanKhuc).get();
                 Segment segment = new Segment();
                 Element div = trangCon.select("div.container.info-hang-xe.flex").first();
-//                String img = div.select("div.img img").attr("src");
                 String name = div.select("h1.name").text();
                 String description = div.select("div.content p").get(1).text();
-
                 segment.setName(name);
                 segment.setDescription(description);
-                List<Car> cars = new ArrayList<>();
-                for (Car car : carRepository.findAll()){
-                    {
-                        cars.add(car);
-                    }
-                }
-                segment.setCars(cars);
                 coms.add(segment);
             }
         }

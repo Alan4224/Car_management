@@ -11,11 +11,12 @@ import java.util.List;
 
 public interface SaleRepository extends JpaRepository<Sale,String> {
 
-    @Query(value = "SELECT c.company, SUM(s.north) + SUM(s.central) + SUM(s.south) AS totalsale " +
-            "FROM car c JOIN sale s ON c.id = s.car_id " +
-            "WHERE s.month = ?1 " +
-            "GROUP BY c.company " +
-            "ORDER BY totalsale DESC " +
+    @Query(value = "SELECT com.name as company, SUM(s.north) + SUM(s.central) + SUM(s.south) AS totalsale \n" +
+            "FROM car c JOIN sale s ON c.id = s.car_id \n" +
+            "join company com on c.company_id = com.id\n" +
+            "WHERE s.month = ?1 \n" +
+            "GROUP BY com.name\n" +
+            "ORDER BY totalsale DESC \n" +
             "LIMIT 10"
             , nativeQuery = true)
     List<SaleMonthProjection> topMonth(Integer month);
@@ -35,11 +36,12 @@ public interface SaleRepository extends JpaRepository<Sale,String> {
             , nativeQuery = true)
     List<SaleFuelProjection> saleFuel();
 
-    @Query(value="SELECT c.company, c.name, SUM(s.north) AS north , SUM(s.central) AS central , SUM(s.south) AS south, \n" +
+    @Query(value="SELECT com.name as company, c.name, SUM(s.north) AS north , SUM(s.central) AS central , SUM(s.south) AS south, \n" +
             "SUM(s.north) + SUM(s.central) + SUM(s.south) AS totalsale\n" +
             "FROM car c\n" +
             "JOIN sale s ON c.id = s.car_id\n" +
-            "GROUP BY c.company, c.name\n" +
+            "join company com on c.company_id = com.id\n" +
+            "GROUP BY com.name, c.name\n" +
             "ORDER BY totalsale DESC\n" +
             "LIMIT 5;"
             , nativeQuery = true)

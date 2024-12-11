@@ -15,6 +15,6 @@ public class Segment {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @OneToMany
+    @OneToMany(mappedBy = "segment",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     List<Car> cars;
 }

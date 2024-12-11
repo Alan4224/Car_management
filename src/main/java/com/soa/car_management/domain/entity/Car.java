@@ -37,6 +37,16 @@ public class Car {
     @JsonBackReference
     private Company company; // Hãng xe
 
+    @ManyToOne
+    @JoinColumn(name = "cartype_id",nullable = false, referencedColumnName = "id")
+    @JsonBackReference
+    private Cartype cartype; // Loại xe
+
+    @ManyToOne
+    @JoinColumn(name = "segment_id",nullable = false, referencedColumnName = "id")
+    @JsonBackReference
+    private Segment segment; // Phân khúc
+
     // Động cơ/hộp số
     private String engineType; // Kiểu động cơ
 
