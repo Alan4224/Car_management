@@ -1,6 +1,7 @@
 package com.soa.car_management.controller;
 
 import com.soa.car_management.domain.entity.Car;
+import com.soa.car_management.projection.CarDTO;
 import com.soa.car_management.repository.CarRepository;
 import com.soa.car_management.service.CarService;
 
@@ -28,6 +29,11 @@ public class CarController {
     @GetMapping("/crawdata")
     List<Car> crawData() {
         return carService.crawData();
+    }
+    @Operation(summary = "So sánh các xe", description = "Lấy ra thông tin của các xe cần so sánh")
+    @GetMapping("/so-sanh")
+    public ResponseEntity<List<Car>> soSanh(@Parameter(description = "Thông tin hãng, tên, version") @RequestBody List<CarDTO> cars){
+        return ResponseEntity.ok(carService.soSanh(cars));
     }
 
     @PostMapping

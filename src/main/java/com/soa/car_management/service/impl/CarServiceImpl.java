@@ -4,6 +4,7 @@ import com.soa.car_management.domain.entity.Car;
 import com.soa.car_management.domain.entity.Cartype;
 import com.soa.car_management.domain.entity.Company;
 import com.soa.car_management.domain.entity.Segment;
+import com.soa.car_management.projection.CarDTO;
 import com.soa.car_management.projection.GetAllProjection;
 import com.soa.car_management.repository.CarRepository;
 import com.soa.car_management.repository.CartypeRepository;
@@ -44,13 +45,23 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
+    public List<Car> soSanh(List<CarDTO> carDTOs){
+        List<Car> cars = new ArrayList<>();
+        for(CarDTO carDTO : carDTOs){
+            Car car = carRepository.getAllByCompanyAndNameAndVersion(carDTO.getCompany(),carDTO.getName(),carDTO.getVersion());
+            cars.add(car);
+        }
+        return cars;
+    }
+
+    @Override
     public List<GetAllProjection> getAllCar() {
         System.out.println(carRepository.count());
         return carRepository.getAllCar();
     }
 
     @Override
-    public List<Car> getCarByCompanyAndNameAndVersion(String company, String carName, String carVersion) {
+    public Car getCarByCompanyAndNameAndVersion(String company, String carName, String carVersion) {
         return carRepository.getAllByCompanyAndNameAndVersion(company,carName,carVersion);
     }
 
