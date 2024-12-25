@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface CarRepository extends JpaRepository<Car,String> {
 
-    @Query(value = "SELECT com.name as company,c.name,c.version,c.engine_type,c.price\n" +
+    @Query(value = "SELECT c.id,com.name as company,c.name,c.version,c.engine_type,c.price\n" +
             "FROM car c\n" +
             "join company com on c.company_id = com.id\n" +
             "ORDER BY com.name,c.name;"

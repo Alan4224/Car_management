@@ -1,6 +1,7 @@
 package com.soa.car_management.repository;
 
 import com.soa.car_management.domain.entity.Sale;
+import com.soa.car_management.projection.AllMonthProjection;
 import com.soa.car_management.projection.PriceRangeProjection;
 import com.soa.car_management.projection.SaleFuelProjection;
 import com.soa.car_management.projection.SaleMonthProjection;
@@ -16,8 +17,7 @@ public interface SaleRepository extends JpaRepository<Sale,String> {
             "join company com on c.company_id = com.id\n" +
             "WHERE s.month = ?1 \n" +
             "GROUP BY com.name\n" +
-            "ORDER BY totalsale DESC \n" +
-            "LIMIT 10"
+            "ORDER BY totalsale DESC "
             , nativeQuery = true)
     List<SaleMonthProjection> topMonth(Integer month);
 
@@ -36,12 +36,12 @@ public interface SaleRepository extends JpaRepository<Sale,String> {
             , nativeQuery = true)
     List<SaleFuelProjection> saleFuel();
 
-    @Query(value="SELECT com.name as company, c.name, SUM(s.north) AS north , SUM(s.central) AS central , SUM(s.south) AS south, \n" +
+    @Query(value="SELECT com.name as company, c.name, c.image, SUM(s.north) AS north , SUM(s.central) AS central , SUM(s.south) AS south, \n" +
             "SUM(s.north) + SUM(s.central) + SUM(s.south) AS totalsale\n" +
             "FROM car c\n" +
             "JOIN sale s ON c.id = s.car_id\n" +
             "join company com on c.company_id = com.id\n" +
-            "GROUP BY com.name, c.name\n" +
+            "GROUP BY com.name, c.name, c.image\n" +
             "ORDER BY totalsale DESC\n" +
             "LIMIT 5;"
             , nativeQuery = true)
@@ -95,7 +95,15 @@ public interface SaleRepository extends JpaRepository<Sale,String> {
             "WHERE c.price LIKE '1__ triệu%' \n" +
             "OR c.price LIKE '2__ triệu%' \n" +
             "OR c.price LIKE '3__ triệu%' \n" +
-            "OR c.price LIKE '4__ triệu%';"
+            "OR c.price LIKE '4__ triệu%' \n" +
+            "order by totalsale desc;"
             ,nativeQuery = true)
     List<PriceRangeProjection> priceRange();
+
+    @Query(value = "select SUM(s.north) + SUM(s.central) + SUM(s.south) AS totalSale, s.month\n" +
+            "from sale s \n" +
+            "group by s.month\n" +
+            "order by s.month "
+    ,nativeQuery = true)
+    List<AllMonthProjection> allMonth();
 }

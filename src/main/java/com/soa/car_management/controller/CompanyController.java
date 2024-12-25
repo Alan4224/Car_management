@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = {"http://127.0.0.1:5500", "http://localhost:51344"})
 @RequestMapping("/hang-xe")
 @Tag(name = "HÃNG XE", description = "APIs for managing car company data")
 public class CompanyController {

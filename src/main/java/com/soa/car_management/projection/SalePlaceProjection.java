@@ -8,5 +8,6 @@ import java.util.List;
 @Getter
 public class SalePlaceProjection {
     private String companyAndName;
+    private String image;
     private List<SalePlace> data;
 }

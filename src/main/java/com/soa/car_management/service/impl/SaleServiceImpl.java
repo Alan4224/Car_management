@@ -24,6 +24,11 @@ public class SaleServiceImpl implements SaleService {
     CarRepository carRepository;
 
     @Override
+    public List<AllMonthProjection> allMonth(){
+        return saleRepository.allMonth();
+    }
+
+    @Override
     public List<SaleMonthProjection> topMonth(Integer month) {
         return saleRepository.topMonth(month);
     }
@@ -41,11 +46,12 @@ public class SaleServiceImpl implements SaleService {
             List<SalePlace> salePlaces=new ArrayList<>();
             String[] regions={"Northern","Central","Southern","TotalSale"};
             for(int i=0;i<4;i++){
-                SalePlace salePlace=new SalePlace(regions[i],((Number) obj[i+2]).intValue());
+                SalePlace salePlace=new SalePlace(regions[i],((Number) obj[i+3]).intValue());
                 salePlaces.add(salePlace);
             }
             SalePlaceProjection dto = new SalePlaceProjection();
             dto.setCompanyAndName((String) obj[0]+" "+(String) obj[1]);
+            dto.setImage((String) obj[2]);
             dto.setData(salePlaces);
             salePlaceProjections.add(dto);
         }
