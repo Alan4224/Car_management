@@ -12,7 +12,7 @@ public interface CarService {
 
     List<Car> getAllCarInfo();
     List<Car> crawData();
-    List<Car> soSanh(List<CarDTO> cars);
+    List<Car> soSanh(String names);
     Car getCarByCompanyAndNameAndVersion(String company, String carName,String carVersion);
     List<GetAllProjection> getAllCar();
     Car createCar(Car car);

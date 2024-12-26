@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -45,10 +46,11 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public List<Car> soSanh(List<CarDTO> carDTOs){
+    public List<Car> soSanh(String names){
         List<Car> cars = new ArrayList<>();
-        for(CarDTO carDTO : carDTOs){
-            Car car = carRepository.getAllByCompanyAndNameAndVersion(carDTO.getCompany(),carDTO.getName(),carDTO.getVersion());
+        List<String> nameList = Arrays.stream(names.split(",")).toList();
+        for(String name : nameList){
+            Car car = carRepository.getCarByName(name);
             cars.add(car);
         }
         return cars;

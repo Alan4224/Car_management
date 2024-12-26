@@ -38,4 +38,9 @@ public class CompanyController {
     ResponseEntity<CompanyDetail> getDetail(@Parameter(description = "Name of the company")@PathVariable String name){
         return ResponseEntity.ok(companyService.getDetail(name));
     }
+
+    @GetMapping("/getAll")
+    ResponseEntity<List<Company>> getAll(){
+        return ResponseEntity.ok(companyService.getAll());
+    }
 }

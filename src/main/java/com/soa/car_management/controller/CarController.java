@@ -33,8 +33,8 @@ public class CarController {
     }
     @Operation(summary = "So sánh các xe", description = "Lấy ra thông tin của các xe cần so sánh")
     @GetMapping("/so-sanh")
-    public ResponseEntity<List<Car>> soSanh(@Parameter(description = "Thông tin hãng, tên, version") @RequestBody List<CarDTO> cars){
-        return ResponseEntity.ok(carService.soSanh(cars));
+    public ResponseEntity<List<Car>> soSanh(@Parameter(description = "Thông tin hãng, tên, version") @RequestParam String names){
+        return ResponseEntity.ok(carService.soSanh(names));
     }
 
     @PostMapping

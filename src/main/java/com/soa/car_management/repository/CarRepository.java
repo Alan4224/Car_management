@@ -24,4 +24,9 @@ public interface CarRepository extends JpaRepository<Car,String> {
     @Query(value = "SELECT c.* from car c join company com on c.company_id = com.id where com.name = ?1 and c.name = ?2 and c.version = ?3 ",nativeQuery = true)
     Car getAllByCompanyAndNameAndVersion(String company, String name,String version);
 
+    @Query(value = "SELECT c.* from car c \n" +
+            "where c.name = ?1\n" +
+            "limit 1"
+            ,nativeQuery = true)
+    Car getCarByName(String name);
 }

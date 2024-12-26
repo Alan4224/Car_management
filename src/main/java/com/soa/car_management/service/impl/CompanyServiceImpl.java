@@ -28,6 +28,11 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    public List<Company> getAll(){
+        return companyRepository.findAll();
+    }
+
+    @Override
     public CompanyDetail getDetail(String name){
          List<CompanyDetailProjection> data = companyRepository.findProjectedByName(name);
          List<CarDetail> carDetails = new ArrayList<>();

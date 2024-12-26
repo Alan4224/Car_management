@@ -13,4 +13,5 @@ public interface CompanyService {
     List<CompanyLabelProjection> getLabel();
     CompanyDetail getDetail(String name);
     List<Company> craw();
+    List<Company> getAll();
 }
