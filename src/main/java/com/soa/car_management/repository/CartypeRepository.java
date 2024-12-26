@@ -1,6 +1,7 @@
 package com.soa.car_management.repository;
 
 import com.soa.car_management.domain.entity.Cartype;
+import com.soa.car_management.projection.AllCarTypeProj;
 import com.soa.car_management.projection.CartypeProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -23,4 +24,10 @@ public interface CartypeRepository extends JpaRepository<Cartype,String> {
             "GROUP BY c.name, ctp.name, ctp.img, ctp.description, c.image"
             ,nativeQuery = true)
     List<Object[]> findProjectedByName(@Param("name") String name);
+
+    @Query(value = "SELECT s.id, s.name, s.description, s.img, COUNT(distinct c.name) as count\n" +
+            "FROM cartype s\n" +
+            "JOIN car c ON c.cartype_id = s.id\n" +
+            "GROUP BY s.id, s.name, s.description, s.img;",nativeQuery = true)
+    List<AllCarTypeProj> getAll();
 }

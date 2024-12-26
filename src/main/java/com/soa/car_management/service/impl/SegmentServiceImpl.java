@@ -1,6 +1,7 @@
 package com.soa.car_management.service.impl;
 
 import com.soa.car_management.domain.entity.Segment;
+import com.soa.car_management.projection.AllSegmentProj;
 import com.soa.car_management.projection.CarDetail;
 import com.soa.car_management.projection.SegmentDetail;
 import com.soa.car_management.projection.SegmentDetailProjection;
@@ -38,6 +39,16 @@ public class SegmentServiceImpl implements SegmentService {
         String segName = (String) data.getFirst()[0];
         String description = (String) data.getFirst()[1];
         return new SegmentDetail(segName,description,carDetails);
+    }
+
+    @Override
+    public List<AllSegmentProj> getAll(){
+        return segmentRepository.getAll();
+    }
+
+    @Override
+    public void deleteSegment(String id) {
+        segmentRepository.deleteById(id);
     }
 
     @Override

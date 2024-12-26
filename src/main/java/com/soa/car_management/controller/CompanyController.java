@@ -1,6 +1,7 @@
 package com.soa.car_management.controller;
 
 import com.soa.car_management.domain.entity.Company;
+import com.soa.car_management.projection.AllCompanyProj;
 import com.soa.car_management.projection.CompanyDetail;
 import com.soa.car_management.projection.CompanyLabelProjection;
 import com.soa.car_management.service.CompanyService;
@@ -39,8 +40,15 @@ public class CompanyController {
         return ResponseEntity.ok(companyService.getDetail(name));
     }
 
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Delete a car", description = "Delete an existing car entry in the system")
+    public ResponseEntity<Void> deleteCompany(@Parameter(description = "ID of the car to be deleted") @PathVariable String id) {
+        companyService.deleteCompany(id);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping("/getAll")
-    ResponseEntity<List<Company>> getAll(){
+    ResponseEntity<List<AllCompanyProj>> getAll(){
         return ResponseEntity.ok(companyService.getAll());
     }
 }

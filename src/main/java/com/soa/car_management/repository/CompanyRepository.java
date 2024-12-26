@@ -1,6 +1,7 @@
 package com.soa.car_management.repository;
 
 import com.soa.car_management.domain.entity.Company;
+import com.soa.car_management.projection.AllCompanyProj;
 import com.soa.car_management.projection.CompanyDetailProjection;
 import com.soa.car_management.projection.CompanyLabelProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -39,5 +40,9 @@ public interface CompanyRepository extends JpaRepository<Company,String>  {
         List<CompanyDetailProjection> findProjectedByName(@Param("name") String name);
 
         Company findByName(String name);
+
+        @Query(value = "select com.id,com.name,com.description,com.img\n" +
+                "from company com",nativeQuery = true)
+        List<AllCompanyProj> getAll();
 }
 

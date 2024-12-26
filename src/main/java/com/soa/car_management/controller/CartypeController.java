@@ -1,6 +1,7 @@
 package com.soa.car_management.controller;
 
 import com.soa.car_management.domain.entity.Cartype;
+import com.soa.car_management.projection.AllCarTypeProj;
 import com.soa.car_management.projection.CartypeDetail;
 import com.soa.car_management.projection.CartypeProjection;
 import com.soa.car_management.service.CartypeService;
@@ -39,5 +40,10 @@ public class CartypeController {
     @GetMapping("/{name}")
     ResponseEntity<CartypeDetail> getDetail(@Parameter(description = "Name of the car type")@PathVariable String name){
         return ResponseEntity.ok(cartypeService.getDetail(name));
+    }
+
+    @GetMapping("/getAll")
+    ResponseEntity<List<AllCarTypeProj>> getAll(){
+        return ResponseEntity.ok(cartypeService.getAll());
     }
 }

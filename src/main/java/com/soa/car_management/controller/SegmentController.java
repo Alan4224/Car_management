@@ -1,6 +1,7 @@
 package com.soa.car_management.controller;
 
 import com.soa.car_management.domain.entity.Segment;
+import com.soa.car_management.projection.AllSegmentProj;
 import com.soa.car_management.projection.SegmentDetail;
 import com.soa.car_management.projection.SegmentDetailProjection;
 import com.soa.car_management.service.SegmentService;
@@ -37,5 +38,17 @@ public class SegmentController {
     @GetMapping("/{name}")
     ResponseEntity<SegmentDetail> getDetail(@Parameter(description = "Name of the segment")@PathVariable String name){
         return ResponseEntity.ok(segmentService.getDetail(name));
+    }
+
+    @GetMapping("/getAll")
+    ResponseEntity<List<AllSegmentProj>> getAll(){
+        return ResponseEntity.ok(segmentService.getAll());
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Delete a car", description = "Delete an existing car entry in the system")
+    public ResponseEntity<Void> deleteSegment(@Parameter(description = "ID of the car to be deleted") @PathVariable String id) {
+        segmentService.deleteSegment(id);
+        return ResponseEntity.noContent().build();
     }
 }

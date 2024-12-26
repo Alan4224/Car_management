@@ -1,6 +1,7 @@
 package com.soa.car_management.service.impl;
 
 import com.soa.car_management.domain.entity.Cartype;
+import com.soa.car_management.projection.AllCarTypeProj;
 import com.soa.car_management.projection.CarDetail;
 import com.soa.car_management.projection.CartypeDetail;
 import com.soa.car_management.projection.CartypeProjection;
@@ -20,6 +21,10 @@ public class CartypeServiceImpl implements CartypeService {
     @Autowired
     CartypeRepository cartypeRepository;
 
+    @Override
+    public List<AllCarTypeProj> getAll(){
+        return  cartypeRepository.getAll();
+    }
     @Override
     public CartypeDetail getDetail(String name) {
         List<Object[]> data = cartypeRepository.findProjectedByName(name);

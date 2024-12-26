@@ -1,10 +1,7 @@
 package com.soa.car_management.service.impl;
 
 import com.soa.car_management.domain.entity.Company;
-import com.soa.car_management.projection.CarDetail;
-import com.soa.car_management.projection.CompanyDetail;
-import com.soa.car_management.projection.CompanyDetailProjection;
-import com.soa.car_management.projection.CompanyLabelProjection;
+import com.soa.car_management.projection.*;
 import com.soa.car_management.repository.CompanyRepository;
 import com.soa.car_management.service.CompanyService;
 import org.jsoup.Jsoup;
@@ -28,8 +25,13 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public List<Company> getAll(){
-        return companyRepository.findAll();
+    public List<AllCompanyProj> getAll(){
+        return companyRepository.getAll();
+    }
+
+    @Override
+    public void deleteCompany(String id) {
+        companyRepository.deleteById(id);
     }
 
     @Override
