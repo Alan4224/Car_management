@@ -1,5 +1,6 @@
 package com.soa.car_management.controller;
 
+import com.soa.car_management.domain.entity.Car;
 import com.soa.car_management.domain.entity.Cartype;
 import com.soa.car_management.projection.AllCarTypeProj;
 import com.soa.car_management.projection.CartypeDetail;
@@ -10,11 +11,15 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 @RestController
 @CrossOrigin(origins = {"http://127.0.0.1:5500", "http://localhost:51344"})
@@ -45,5 +50,11 @@ public class CartypeController {
     @GetMapping("/getAll")
     ResponseEntity<List<AllCarTypeProj>> getAll(){
         return ResponseEntity.ok(cartypeService.getAll());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteCompany(@Parameter(description = "ID of the car to be deleted") @PathVariable String id) {
+        cartypeService.deleteCartype(id);
+        return ResponseEntity.noContent().build();
     }
 }

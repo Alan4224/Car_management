@@ -41,8 +41,10 @@ public interface CompanyRepository extends JpaRepository<Company,String>  {
 
         Company findByName(String name);
 
-        @Query(value = "select com.id,com.name,com.description,com.img\n" +
-                "from company com",nativeQuery = true)
+        @Query(value = "select com.id,com.name,com.description,com.img, COUNT(distinct c.name) as count\n" +
+                "from company com\n" +
+                "join car c on c.company_id= com.id\n" +
+                "group by com.id,com.name,com.description,com.img",nativeQuery = true)
         List<AllCompanyProj> getAll();
 }
 

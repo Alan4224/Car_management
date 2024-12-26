@@ -25,6 +25,12 @@ public class CartypeServiceImpl implements CartypeService {
     public List<AllCarTypeProj> getAll(){
         return  cartypeRepository.getAll();
     }
+
+    @Override
+    public void deleteCartype(String id) {
+        cartypeRepository.deleteById(id);
+    }
+
     @Override
     public CartypeDetail getDetail(String name) {
         List<Object[]> data = cartypeRepository.findProjectedByName(name);

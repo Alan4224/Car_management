@@ -5,4 +5,5 @@ public interface AllCompanyProj {
     String getName();
     String getDescription();
     String getImg();
+    String getCount();
 }

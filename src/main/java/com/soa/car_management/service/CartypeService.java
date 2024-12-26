@@ -13,4 +13,5 @@ public interface CartypeService {
     List<CartypeProjection> getLabel1();
     List<Cartype> crawcartype();
     List<AllCarTypeProj> getAll();
+    void deleteCartype(String id);
 }
