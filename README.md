@@ -4,7 +4,7 @@ Car_management
 
 ## Introduction
 
-Car_management is a backend system designed to **crawl and provide car-related data** from **VNExpress**. The API offers various features for retrieving car information and generating insightful statistics.
+Car_management is a backend system designed to **crawl and provide car-related data** from **VnExpress**. The API offers various features for retrieving car information and generating insightful statistics.
 
 ## Key Features
 
